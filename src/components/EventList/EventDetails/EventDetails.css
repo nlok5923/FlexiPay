@@ -1,0 +1,51 @@
+.ed-div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.ed-img {
+    width: 50%;
+    box-shadow: 5px 5px 5px rgba(143, 140, 140, 0.74);
+}
+.ed-text-div {
+    margin: 5vh 0;
+}
+.ed-heading {
+    font-size: 2rem;
+    font-family: 'ManropeBold';
+    text-align: center;
+    border-bottom: 2px solid rgb(78, 230, 179);
+    color: #ffff;
+    margin: 8vh 0;
+}
+.ed-card {
+    border-radius: 0.5vw;
+    margin: 2vh 4%;
+    border: 1px solid rgb(78, 230, 179);
+    background-color: rgb(48, 49, 51);
+    color: #ffff !important;
+    box-shadow: 1px 1px 10px rgba(143, 140, 140, 0.74);
+    padding: 5vh 5vw;
+}
+.ed-card-title {
+    color: white;
+    font-family: 'ManropeBold';
+    font-size: 1.8rem;
+}
+.ed-card-text {
+    color: white;
+    font-family: 'ManropeRegular';
+    font-size: 1rem;
+    margin: 3vh 0;
+}
+
+.ed-submit-form-item {
+    padding: 5vh 0;
+}
+.ed-submit-btn {
+    border-radius: 0.5vw !important;
+    background-color: #0045cf !important;
+    border-color: #0045cf !important;
+    font-family: 'ManropeMedium' !important;
+    font-size: 0.9rem !important;
+}
