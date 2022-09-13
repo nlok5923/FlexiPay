@@ -1,0 +1,21 @@
+.pagelayout-div {
+    height: 100vh;
+    display: flex;
+    flex-flow: column;
+}
+.page-layout-div .pl-div1 {
+    flex: 0 1 auto;
+}
+.pl-div2 {
+    flex: 1 1 auto;
+    display: flex;
+    height: 90%;
+    width: 100vw;
+}
+.pl-content-div {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+    background-color: #191B1F;
+}

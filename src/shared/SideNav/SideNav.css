@@ -1,0 +1,28 @@
+.side-nav-menu {
+    width: 18% !important;
+    padding: 0 2vw !important;
+}
+.ant-menu-item {
+    margin: 6.5vh 0 !important;
+    padding: 3vh 0 3vh 1vw !important;
+}
+.ant-menu-title-content {
+    font-size: 1.2vw;
+    font-family: 'ManropeSemibold';
+    color: white !important;
+    user-select: none;
+}
+.ant-menu-dark.ant-menu-dark:not(.ant-menu-horizontal) .ant-menu-item-selected {
+    background-color: transparent;
+}
+.ant-menu-item-selected {
+    background-color: white !important;
+    padding: 3vh 0 3vh 1vw !important;
+    border-radius: 0.5vw;
+}
+.ant-menu-item-selected .ant-menu-title-content {
+    color: #0A1E32 !important;
+}
+.ant-menu-item-selected .ant-menu-item-icon {
+    color: #0A1E32 !important;
+}

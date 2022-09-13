@@ -1,0 +1,71 @@
+.ce-par-div {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.ce-div {
+    margin: 0 3vw;
+    width: 60vw;
+}
+.ce-heading {
+    font-size: 2rem;
+    font-family: 'ManropeBold';
+    text-align: center;
+    color: rgb(255, 255, 255);
+}
+.ce-form {
+    margin: 5vh 0;
+    overflow: auto;
+}
+.ant-form-item-required {
+    color: rgb(255, 255, 255) !important;
+    font-family: 'ManropeMedium';
+    font-size: 1.2rem;
+}
+.ant-input {
+    background-color: rgb(48, 49, 51) !important;
+    border-radius: 0.5vw !important;
+}
+.ant-input-status-success {
+    color: white !important;
+}
+.ant-input-number-input {
+    background-color: rgb(48, 49, 51);
+    color: white !important;
+    border-radius: 0.5vw;
+}
+.ant-input-number-input-status-error {
+    background-color: rgb(48, 49, 51) !important;
+    color: white !important;
+}
+.ant-input-status-error {
+    background-color: rgb(48, 49, 51) !important;
+}
+.ce-submit-form-item {
+    padding: 5vh 0;
+}
+.ce-submit-btn {
+    border-radius: 0.5vw !important;
+    background-color: #0045cf !important;
+    border-color: #0045cf !important;
+    font-family: 'ManropeMedium' !important;
+    font-size: 0.9rem !important;
+}
+.ce-submit-btn:hover {
+    background-color: #2e65d3;
+    border-color: #2e65d3;
+}
+.ant-picker {
+    background-color: rgb(48, 49, 51) !important;
+    border-radius: 0.5vw !important;
+}
+.anticon-swap-right {
+    color: white !important;
+}
+.ant-picker-suffix {
+    color: white !important;
+}
+.ant-picker-input:nth-child() {
+    color: white !important;
+}
