@@ -1,0 +1,60 @@
+.el-div {
+    width: 100%;
+}
+.el-heading {
+    font-size: 2rem;
+    font-family: 'ManropeBold';
+    text-align: center;
+    color: #fff;
+}
+.el-cover-img {
+    width: auto;
+    max-width: 100%;
+    height: 35vh;
+}
+.ant-card-cover {
+    display: flex;
+    justify-content: center;
+}
+.el-grid-div {
+    display: grid;
+    justify-content: center;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 4vh 0;
+    justify-items: center;
+    padding: 3vh 0;
+}
+.ant-card-bordered {
+    border: 0 !important;
+    color: #ffff !important;
+    box-shadow: 3px 3px 15px #adace7d3 !important;
+    font-family: 'ManropeRegular' !important;
+    font-size: 0.83rem !important;
+}
+.ant-card-bordered:hover {
+    transform: scale(1.02);
+}
+.el-card-heading {
+    color: #ffff;
+    font-family: 'ManropeBold';
+    font-size: 1rem;
+}
+.ant-card-actions {
+    border: 0;
+    background-color: rgb(48, 49, 51) !important;
+}
+.el-card {
+    width: 80%;
+    max-width: 25vw;
+    margin: 0;
+    padding: 0;
+    background-color: rgb(48, 49, 51)!important;
+    cursor: pointer;
+    user-select: none;
+}
+.el-card-price {
+    margin: 1vh 0;
+}
+.el-card-address {
+    margin: 1vh 0;
+}
