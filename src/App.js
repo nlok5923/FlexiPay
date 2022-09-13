@@ -1,21 +1,22 @@
-import logo from './logo.svg';
-import './fonts.css'
 import './App.css';
+import './fonts.css'
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import PageLayout from "./shared/PageLayout/PageLayout";
 import LandingPage from "./components/LandingPage/LandingPage";
 import CreateEvent from "./components/CreateEvent/CreateEvent"
 import EventList from './components/EventList/EventList';
+import EventDetails from './components/EventList/EventDetails/EventDetails';
 
 function App() {
   return (
-    <div>
+    <div className='App'>
       <Router>
         <PageLayout>
           <Routes>
             <Route path="/" element={<LandingPage/>} />
             <Route path="/create-event" element={<CreateEvent/>}  />
             <Route path='/events' element={<EventList/>} />
+            <Route path='/events/:id' element={<EventDetails />} />
           </Routes>
         </PageLayout>
       </Router>
