@@ -2,6 +2,7 @@ import React from 'react'
 import './Navbar.css'
 import { Menu, Button } from 'antd';
 import { ClusterOutlined, AppstoreOutlined, SettingOutlined } from '@ant-design/icons';
+// import { ConnectButton } from '@rainbow-me/rainbowkit';
 
 const Navbar = () => {
   return (
@@ -10,15 +11,15 @@ const Navbar = () => {
             <div className='nav-logo-div'>
                 <ClusterOutlined className='nav-logo' />
                 <span className='logo-heading'>
-                    Cluster Protocol
+                    Flexipay
                 </span>
             </div>
-            {/* <div className='navbar-btn-div'> */}
-                {/* <Button className='nav-btn'>
+            {/* <div className='navbar-btn-div'>
+                <Button className='nav-btn'>
                     Connect
-                </Button> */}
-                {/* <ConnectButton className='nav-btn' /> */}
-            {/* </div> */}
+                </Button>
+                <ConnectButton className='nav-btn' />
+            </div> */}
         </Menu>
     </div>
   )
