@@ -2,7 +2,7 @@ import React from 'react'
 import './Navbar.css'
 import { Menu, Button } from 'antd';
 import { ClusterOutlined, AppstoreOutlined, SettingOutlined } from '@ant-design/icons';
-// import { ConnectButton } from '@rainbow-me/rainbowkit';
+import { ConnectButton } from '@rainbow-me/rainbowkit';
 
 const Navbar = () => {
   return (
@@ -14,12 +14,9 @@ const Navbar = () => {
                     Flexipay
                 </span>
             </div>
-            {/* <div className='navbar-btn-div'>
-                <Button className='nav-btn'>
-                    Connect
-                </Button>
+            <div className='navbar-btn-div'>
                 <ConnectButton className='nav-btn' />
-            </div> */}
+            </div>
         </Menu>
     </div>
   )
