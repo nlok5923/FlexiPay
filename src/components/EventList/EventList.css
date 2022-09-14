@@ -44,13 +44,13 @@
     background-color: rgb(48, 49, 51) !important;
 }
 .el-card {
-    width: 80%;
-    max-width: 25vw;
-    margin: 0;
-    padding: 0;
+    width: 80% !important;
+    max-width: 25vw !important;
+    margin: 0 !important;
+    padding: 0 !important;
     background-color: rgb(48, 49, 51)!important;
-    cursor: pointer;
-    user-select: none;
+    cursor: pointer !important;
+    user-select: none !important;
 }
 .el-card-price {
     margin: 1vh 0;

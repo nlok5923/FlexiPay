@@ -2,6 +2,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 100%;
 }
 .ed-img {
     width: 50%;
@@ -48,4 +49,17 @@
     border-color: #0045cf !important;
     font-family: 'ManropeMedium' !important;
     font-size: 0.9rem !important;
+}
+.ed-join-event-div {
+    width: 90%;
+}
+.ed-join-event-steps {
+    width: 50% !important;
+    margin: 4vh auto !important;
+
+}
+.ant-steps-item-title {
+    color: #fff !important;
+    font-family: 'ManropeRegular';
+    font-size: 0.7rem;
 }
