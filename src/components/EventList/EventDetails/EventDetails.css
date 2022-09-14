@@ -63,3 +63,60 @@
     font-family: 'ManropeRegular';
     font-size: 0.7rem;
 }
+.ed-after-joining-div {
+    margin: 5vh auto;
+}
+.ed-alert {
+    margin-top: 1vh !important;
+    margin-bottom: 2.5vh !important;
+    background-color: transparent !important;
+    border-radius: 0.5vw !important;
+}
+.ant-alert-message {
+    color: #fff !important;
+    font-family: 'ManropeMedium';
+}
+.ed-di-div {
+    border-radius: 0.5vw !important;
+    background-color: #0947c4 !important;
+    border-color: #85a7ec !important;
+    padding: 2vh 2vw;
+    cursor: pointer;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.ed-di-div:hover {
+    background-color: #0055ff !important;
+}
+.ed-discord-img {
+    width: 5%;
+    margin-right: 2%;
+}
+.ed-di-text {
+    font-family: 'ManropeMedium';
+    font-size: 1.2rem;
+}
+.ed-stream-div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 2px solid rgba(182, 8, 8, 0.76);
+    background-color: rgb(48, 49, 51);
+    border-radius: 0.7vw;
+    padding: 2vh 2vw;
+}
+.ed-stream-heading {
+    font-size: 2rem;
+    font-family: 'ManropeBold';
+    text-align: center;
+    border-bottom: 1px solid rgb(228, 75, 75);
+    color: #fff;
+    margin: 4vh 0;
+}
+.ed-stream-btn {
+    border-radius: 0.5vw !important;
+    margin: 2vh 0 !important;
+    width: 70%;
+}

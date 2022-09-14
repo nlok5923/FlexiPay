@@ -1,7 +1,8 @@
 import React, { useState, createRef } from 'react'
 import './EventDetails.css'
-import { Form, Input, Button, Steps } from 'antd';
+import { Form, Input, Button, Steps, Alert } from 'antd';
 import Slider from 'react-slick';
+import { Link } from 'react-router-dom';
 const { Step } = Steps;
 
 const EventDetails = () => {
@@ -17,6 +18,8 @@ const EventDetails = () => {
     eventRate: '0.01',
     eventRsvpFee: '0.01',
   };
+
+  const discordInvite = 'https://discord.gg/invite/invite';
   
   const sliderRef = createRef();
   const sliderSettings = {
@@ -36,6 +39,8 @@ const EventDetails = () => {
     sliderRef.current.slickNext();
   }
 
+  const [isStreamStarted, setIsStreamStarted] = useState(false);
+  const [isStreamEnded, setIsStreamEnded] = useState(false);
 
   return (
     <div className='ed-div'>
@@ -79,6 +84,33 @@ const EventDetails = () => {
           </Form>
         </div>
       </div>
+
+      <div className='ed-after-joining-div'>
+        <Alert message="You are registered for the Event !" type='success' showIcon className='ed-alert' />
+        <Alert message="Please join the following Discord Server to participate in the event !" type='info' showIcon className='ed-alert' />
+      <div className='ed-di-div' onClick={()=>window.open(`${discordInvite}`)}>
+          <img src="/assets/images/discord-logo.png" alt="discord-logo.png" className='ed-discord-img' />
+          <span className='ed-di-text'>Discord Invite</span>
+        </div>
+      </div>
+
+      {
+        !isStreamStarted ? 
+        <div className='ed-stream-div'>
+          <h1 className='ed-stream-heading'>Stream Settings</h1>  
+          <Alert message="Please start the stream just before joining the Discord Voice channel for the Event." type='warning' showIcon className='ed-alert' />
+          <Button className='ed-stream-btn' type='danger' onClick={()=> setIsStreamStarted(true)}>Start Stream</Button>
+        </div>
+        :
+        !isStreamEnded ?
+        <div className='ed-stream-div'>
+          <h1 className='ed-stream-heading'>Stream Settings</h1>
+          <Alert message="Please end the stream only when you do not want attend event any further or when the event ends." type='warning' showIcon className='ed-alert' />
+          <Button className='ed-stream-btn' type='danger' onClick={()=>setIsStreamEnded(true)} >End Stream</Button>
+        </div>
+        :
+        null
+      }
 
     </div>
   )
