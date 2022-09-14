@@ -110,7 +110,7 @@ const EventList = () => {
                   key={index}
                   cover={<img src={`https://gateway.pinata.cloud/ipfs/${item[2]}`} alt={item.name} className='el-cover-img' />}
                   className='el-card'
-                  onClick={()=>navigate(`/events/${index}`)}
+                  onClick={()=>navigate(`/events/${item[0]}`)}
                 >
                   <h3 className='el-card-heading'>{item[1]}</h3>
                   <h3 className='el-card-heading'>{item[4]} - {item[5]}</h3>
