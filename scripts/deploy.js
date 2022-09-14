@@ -1,13 +1,11 @@
 const hre = require("hardhat");
 
 async function main() {
-  const Lock = await hre.ethers.getContractFactory("Sample");
-  const lock = await Lock.deploy();
-
-  await lock.deployed();
-
+  const FlexiPayContract = await hre.ethers.getContractFactory("FlexiPay");
+  const FlexiPayContractDeployed = await FlexiPayContract.deploy();
+  await FlexiPayContractDeployed.deployed();
   console.log(
-    `Sample contract deployed to ${lock.address}`
+    `Sample contract deployed to ${FlexiPayContractDeployed.address}`
   );
 }
 
