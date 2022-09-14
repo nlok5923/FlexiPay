@@ -4,11 +4,13 @@
   "private": true,
   "dependencies": {
     "@rainbow-me/rainbowkit": "^0.5.1",
+    "@tableland/sdk": "^3.1.1",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.3.0",
     "@testing-library/user-event": "^13.5.0",
     "antd": "^4.23.1",
     "axios": "^0.27.2",
+    "buffer": "^6.0.3",
     "dotenv": "^16.0.1",
     "hardhat": "^2.9.9",
     "react": "^18.2.0",
