@@ -249,6 +249,7 @@ const EventDetails = () => {
           {!isUserRegisteredForEvent ? (
             <div className="ed-join-event-div">
               <h1 className="ed-heading">Join Event</h1>
+              <Alert message="Your current signed in wallet account would be used to register for the event" className="ed-alert" type="info" showIcon />
               <div className="ed-join-event-slider-div">
                 <Form form={form} className="ed-join-form" layout="vertical">
                   <Form.Item
