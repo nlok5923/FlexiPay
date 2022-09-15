@@ -85,3 +85,11 @@
 .ant-upload-hint { 
     color: rgb(112, 113, 114) !important;
 }
+.ce-radio-choice {
+    color: #fff;
+    font-family: 'ManropeRegular';
+}
+.ant-upload-list-item-name {
+    color: #fff !important;
+    font-family: 'ManropeRegular';
+}
