@@ -12,6 +12,7 @@ import {
   Upload,
   Spin,
   message,
+  Radio
 } from "antd";
 import { Buffer } from "buffer";
 import Axios from "axios";
@@ -23,6 +24,7 @@ import Loader from "../../shared/Loader/Loader";
 
 // Event details table: _80001_1803
 const { Dragger } = Upload;
+const { TextArea } = Input;
 const CreateEvent = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [eventPoster, setEventPoster] = useState(null);
@@ -37,6 +39,8 @@ const CreateEvent = () => {
     orgDiscordUsername: "orgDiscordUsername",
     eventRate: "1",
     eventRsvpFee: "1",
+    isCOP: false,
+    nftImage: null,
   });
 
   let flexiPayContract = GetContract(addresses.FlexiPay, FlexiPayArtifact.abi);
@@ -256,10 +260,11 @@ const CreateEvent = () => {
             name="aboutEvent"
             rules={[{ required: true }]}
           >
-            <Input
+            <TextArea
               placeholder="Tell us about your event"
               name="About Event"
               onChange={(e) => onChangeHandler(e)}
+              maxRows={6}
             />
           </Form.Item>
           <Form.Item
@@ -375,7 +380,12 @@ const CreateEvent = () => {
               onChange={(e) => onChangeHandler(e)}
             />
           </Form.Item>
-          <Form.Item>
+          <Form.Item
+            className="ce-form-label"
+            label="Upload Event Poster Image"
+            name="Event Poster Image"
+            rules={[{ required: true }]}
+          >
             <Dragger {...props}>
               <p className="ant-upload-drag-icon">
                 <InboxOutlined />
@@ -389,6 +399,49 @@ const CreateEvent = () => {
               </p>
             </Dragger>
           </Form.Item>
+          <Form.Item
+            className="ce-form-label"
+            label="Would you like to provide a certificate of participation in form of NFT to attendees ?"
+            name="certificate of participation choice"
+            rules={[{ required: true }]}
+          >
+            <Radio.Group
+              onChange={(e) => {
+                setEvent({
+                  ...event,
+                  isCOP: e.target.value,
+                });
+              }}
+              value={event.isCOP}
+            >
+              <Radio value={true} className='ce-radio-choice' >Yes</Radio>
+              <Radio value={false} className='ce-radio-choice' >No</Radio>
+            </Radio.Group>
+          </Form.Item>
+          {
+            event.isCOP ? 
+            <Form.Item
+              className="ce-form-label"
+              label="Upload the NFT image"
+              name="nftImage"
+              rules={[{ required: true }]}
+            >
+              <Dragger {...props}>
+                <p className="ant-upload-drag-icon">
+                  <InboxOutlined />
+                </p>
+                <p className="ant-upload-text">
+                  Click or drag file to this area to upload
+                </p>
+                <p className="ant-upload-hint">
+                  Support for a single or bulk upload. Strictly prohibit from
+                  uploading company data or other band files
+                </p>
+              </Dragger>
+            </Form.Item>
+            :
+            null
+          }
           <Form.Item className="ce-submit-form-item">
             <Button
               className="ce-submit-btn"
