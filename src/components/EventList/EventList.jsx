@@ -6,6 +6,7 @@ import { useState } from 'react'
 import { Wallet, providers } from "ethers";
 import { connect } from "@tableland/sdk";
 import Loader from '../../shared/Loader/Loader'
+import { Buffer } from 'buffer'
 
 const EventList = () => {
   const navigate = useNavigate();

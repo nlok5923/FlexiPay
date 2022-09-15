@@ -1,5 +1,5 @@
-import "./App.css";
-import "./fonts.css";
+import './App.css';
+import './fonts.css'
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import PageLayout from "./shared/PageLayout/PageLayout";
 import LandingPage from "./components/LandingPage/LandingPage";
@@ -15,10 +15,7 @@ import { publicProvider } from "wagmi/providers/public";
 const { chains, provider } = configureChains(
   [chain.polygonMumbai, chain.ropsten, chain.goerli, chain.hardhat],
   [
-    alchemyProvider({
-      alchemyId:
-        "https://eth-goerli.alchemyapi.io/v2/V5p1PckEwUqIq5s5rA2zvwRKH0V9Hslr",
-    }),
+    alchemyProvider({ alchemyId: "https://eth-goerli.alchemyapi.io/v2/V5p1PckEwUqIq5s5rA2zvwRKH0V9Hslr" }),
     publicProvider(),
   ]
 );
@@ -36,8 +33,8 @@ const wagmiClient = createClient({
 
 function App() {
   return (
-    <div className="App">
-      <WagmiConfig client={wagmiClient}>
+    <div className='App'>
+            <WagmiConfig client={wagmiClient}>
         <RainbowKitProvider chains={chains}>
           <Router>
             <PageLayout>
