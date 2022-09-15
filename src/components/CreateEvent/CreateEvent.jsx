@@ -34,6 +34,7 @@ const CreateEvent = () => {
     eventLink: "event link",
     discordVcName: "discord channel",
     orgMetaMaskAddress: "0x1234",
+    orgDiscordUsername: "orgDiscordUsername",
     eventRate: "1",
     eventRsvpFee: "1",
   });
@@ -170,6 +171,7 @@ const CreateEvent = () => {
         aboutEvent,
         discordVcName,
         orgMetaMaskAddress,
+        orgDiscordUsername
       } = event;
       const INSERT_QUERY = `INSERT INTO _80001_1803 
       (event_id, 
@@ -182,7 +184,8 @@ const CreateEvent = () => {
         end_time, 
         event_link, 
         discord_vc, 
-        org_meta_addr, 
+        org_meta_addr,
+        org_discord_username,
         event_rate, 
         event_rsvp_fee) 
         VALUES ('${eventId.trim()}', 
@@ -196,6 +199,7 @@ const CreateEvent = () => {
         '${eventLink}',
         '${discordVcName}',
         '${orgMetaMaskAddress}',
+        '${orgDiscordUsername}',
         '${eventRate}',
         '${eventRsvpFee}');`;
       console.log(" this is insert query ", INSERT_QUERY);
@@ -326,6 +330,18 @@ const CreateEvent = () => {
             <Input
               placeholder="Enter your MetaMask address"
               name="Organizer MetaMask Address"
+              onChange={(e) => onChangeHandler(e)}
+            />
+          </Form.Item>
+          <Form.Item
+            className="ce-form-label"
+            label="Organizer Discord Username"
+            name="orgDiscordUsername"
+            rules={[{ required: true}]}
+          >
+            <Input
+              placeholder="ex: strawhat#1234"
+              name="Organizer Discord Username"
               onChange={(e) => onChangeHandler(e)}
             />
           </Form.Item>
