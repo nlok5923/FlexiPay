@@ -1,7 +1,11 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import './EventList.css'
 import { Card } from 'antd'
 import { useNavigate } from 'react-router-dom'
+import { useState } from 'react'
+import { Wallet, providers } from "ethers";
+import { connect } from "@tableland/sdk";
+import Loader from '../../shared/Loader/Loader'
 
 const EventList = () => {
   const navigate = useNavigate();
@@ -56,28 +60,67 @@ const EventList = () => {
     }
   ];
   
-  
+  const [tableState, setTableState] = useState(null);
+  const [events, setEvents] = useState(null);
+
+  const initTableLand = async () => {
+    try {
+      const wallet = new Wallet(
+        "2999e4ada1397ed384770e9fd58ad9b41ebffb248f89c8182403f82c48aeae9e"
+      );
+      const provider = new providers.AlchemyProvider(
+        "maticmum",
+        "Vu-mYa0_74IeUxbkODAJquwZsdnDCQM8"
+      );
+      const signer = wallet.connect(provider);
+      const tableland = await connect({
+        signer,
+        network: "testnet",
+        chain: "polygon-mumbai",
+      });
+      const events = await tableland.read(`SELECT * FROM _80001_1803`);
+      setEvents(events);
+      setTableState(tableland);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    window.Buffer = Buffer;
+    initTableLand();
+  }, []);
+
+  const fetchEvents = async () => {
+    await initTableLand();
+    const events = await tableState.read(`SELECT * FROM _80001_1803`);
+    setEvents(events);
+    console.log(events);
+  }
 
   return (
     <div className='el-div'>
       <h1 className='el-heading'>Events</h1>
       <div className='el-grid-div'>
         {
-            data.map((item, index) => {
+            events ?
+            events.rows.map((item, index) => {
               return (
                 <Card
                   key={index}
-                  cover={<img src={item.eventPosterUrl} alt={item.name} className='el-cover-img' />}
+                  cover={<img src={`https://gateway.pinata.cloud/ipfs/${item[2]}`} alt={item.name} className='el-cover-img' />}
                   className='el-card'
-                  onClick={()=>navigate(`/events/${index}`)}
+                  onClick={()=>navigate(`/events/${item[0]}`)}
                 >
-                  <h3 className='el-card-heading'>{item.eventName}</h3>
-                  <h3 className='el-card-heading'>{item.eventStartEndDate[0]} - {item.eventStartEndDate[1]}</h3>
-                  <h3 className='el-card-heading'>{item.eventStartEndTime[0]} - {item.eventStartEndTime[1]}</h3>
-                  <p className='el-card-para'>{item.aboutEvent.length > 150 ? item.aboutEvent.substring(0, 150) + '...' : item.aboutEvent}</p>
+                  <h3 className='el-card-heading'>{item[1]}</h3>
+                  <h3 className='el-card-heading'>{item[4]} - {item[5]}</h3>
+                  <h3 className='el-card-heading'>{item[6]} - {item[7]}</h3>
+                  <p className='el-card-para'>{item[3].length > 150 ? item[3].substring(0, 150) + '...' : item[3]}</p>
                 </Card>
               )
             })
+            :
+            <Loader />
         }
       </div>
     </div>

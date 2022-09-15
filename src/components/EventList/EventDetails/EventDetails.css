@@ -1,0 +1,122 @@
+.ed-div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+.ed-img {
+    width: 50%;
+    box-shadow: 5px 5px 5px rgba(143, 140, 140, 0.74);
+}
+.ed-text-div {
+    margin: 5vh 0;
+}
+.ed-heading {
+    font-size: 2rem;
+    font-family: 'ManropeBold';
+    text-align: center;
+    border-bottom: 2px solid rgb(78, 230, 179);
+    color: #ffff;
+    margin: 8vh 0;
+}
+.ed-card {
+    border-radius: 0.5vw;
+    margin: 2vh 4%;
+    border: 1px solid rgb(78, 230, 179);
+    background-color: rgb(48, 49, 51);
+    color: #ffff !important;
+    box-shadow: 1px 1px 10px rgba(143, 140, 140, 0.74);
+    padding: 5vh 5vw;
+}
+.ed-card-title {
+    color: white;
+    font-family: 'ManropeBold';
+    font-size: 1.8rem;
+}
+.ed-card-text {
+    color: white;
+    font-family: 'ManropeRegular';
+    font-size: 1rem;
+    margin: 3vh 0;
+}
+
+.ed-submit-form-item {
+    padding: 5vh 0;
+}
+.ed-submit-btn {
+    border-radius: 0.5vw !important;
+    background-color: #0045cf !important;
+    border-color: #0045cf !important;
+    font-family: 'ManropeMedium' !important;
+    font-size: 0.9rem !important;
+}
+.ed-join-event-div {
+    width: 90%;
+}
+.ed-join-event-steps {
+    width: 50% !important;
+    margin: 4vh auto !important;
+
+}
+.ant-steps-item-title {
+    color: #fff !important;
+    font-family: 'ManropeRegular';
+    font-size: 0.7rem;
+}
+.ed-after-joining-div {
+    margin: 5vh auto;
+}
+.ed-alert {
+    margin-top: 1vh !important;
+    margin-bottom: 2.5vh !important;
+    background-color: transparent !important;
+    border-radius: 0.5vw !important;
+}
+.ant-alert-message {
+    color: #fff !important;
+    font-family: 'ManropeMedium';
+}
+.ed-di-div {
+    border-radius: 0.5vw !important;
+    background-color: #0947c4 !important;
+    border-color: #85a7ec !important;
+    padding: 2vh 2vw;
+    cursor: pointer;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.ed-di-div:hover {
+    background-color: #0055ff !important;
+}
+.ed-discord-img {
+    width: 5%;
+    margin-right: 2%;
+}
+.ed-di-text {
+    font-family: 'ManropeMedium';
+    font-size: 1.2rem;
+}
+.ed-stream-div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 2px solid rgba(182, 8, 8, 0.76);
+    background-color: rgb(48, 49, 51);
+    border-radius: 0.7vw;
+    padding: 2vh 2vw;
+}
+.ed-stream-heading {
+    font-size: 2rem;
+    font-family: 'ManropeBold';
+    text-align: center;
+    border-bottom: 1px solid rgb(228, 75, 75);
+    color: #fff;
+    margin: 4vh 0;
+}
+.ed-stream-btn {
+    border-radius: 0.5vw !important;
+    margin: 2vh 0 !important;
+    width: 70%;
+}

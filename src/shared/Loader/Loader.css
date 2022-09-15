@@ -1,0 +1,6 @@
+.loader-div {
+    display: flex;
+    flex-direction: column;
+    justify-self: center;
+    margin: auto;
+}
