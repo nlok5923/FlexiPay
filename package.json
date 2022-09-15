@@ -19,6 +19,7 @@
     "react-loader-spinner": "^5.3.4",
     "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.1",
+    "react-slick": "^0.29.0",
     "wagmi": "^0.6.5",
     "web-vitals": "^2.1.4"
   },

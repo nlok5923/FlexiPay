@@ -2,10 +2,10 @@ import './App.css';
 import './fonts.css'
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import PageLayout from "./shared/PageLayout/PageLayout";
-// import LandingPage from "./components/LandingPage/LandingPage";
-import CreateEvent from "./components/CreateEvent/CreateEvent"
-import EventList from './components/EventList/EventList';
-// import EventDetails from './components/EventList/EventDetails/EventDetails';
+import LandingPage from "./components/LandingPage/LandingPage";
+import CreateEvent from "./components/CreateEvent/CreateEvent";
+import EventList from "./components/EventList/EventList";
+import EventDetails from './components/EventList/EventDetails/EventDetails';
 import "@rainbow-me/rainbowkit/styles.css";
 import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { chain, configureChains, createClient, WagmiConfig } from "wagmi";
@@ -36,17 +36,17 @@ function App() {
     <div className='App'>
             <WagmiConfig client={wagmiClient}>
         <RainbowKitProvider chains={chains}>
-      <Router>
-        <PageLayout>
-          <Routes>
-            {/* <Route path="/" element={<LandingPage/>} /> */}
-            <Route path="/create-event" element={<CreateEvent/>}  />
-            <Route path='/events' element={<EventList/>} />
-            {/* <Route path='/events/:id' element={<EventDetails />} /> */}
-          </Routes>
-        </PageLayout>
-      </Router>
-      </RainbowKitProvider>
+          <Router>
+            <PageLayout>
+              <Routes>
+                <Route path="/" element={<LandingPage/>} />
+                <Route path="/create-event" element={<CreateEvent />} />
+                <Route path="/events" element={<EventList />} />
+                <Route path='/events/:id' element={<EventDetails />} />
+              </Routes>
+            </PageLayout>
+          </Router>
+        </RainbowKitProvider>
       </WagmiConfig>
     </div>
   );
