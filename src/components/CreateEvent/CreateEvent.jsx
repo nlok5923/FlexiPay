@@ -19,10 +19,12 @@ import { InboxOutlined } from "@ant-design/icons";
 import addresses from '../../config'
 import FlexiPayArtifact from '../../Ethereum/FlexiPay.json'
 import GetContract from "../../hooks/GetContract";
+import Loader from "../../shared/Loader/Loader";
 
 // Event details table: _80001_1803
 const { Dragger } = Upload;
 const CreateEvent = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const [eventPoster, setEventPoster] = useState(null);
   const [event, setEvent] = useState({
     eventName: "Sample Name",
@@ -142,6 +144,7 @@ const CreateEvent = () => {
       setTableState(tableland);
       console.log("table land init ", tableState);
     } catch (err) {
+      message.warning("Error in connecting to TableLand");
       console.log(err);
     }
   };
@@ -196,11 +199,18 @@ const CreateEvent = () => {
         '${eventRate}',
         '${eventRsvpFee}');`;
       console.log(" this is insert query ", INSERT_QUERY);
+      const EVENT_INSERT_QUERY = `INSERT INTO _80001_1891 (event_id, org_meta_address) VALUES ('${eventId.trim()}', '${orgMetaMaskAddress}');`;
       let writeRes = await tableState.write(INSERT_QUERY);
+      let eventInsertRes = await tableState.write(EVENT_INSERT_QUERY);
       console.log("Added event to event table", writeRes);
+      console.log("Added event to event table", eventInsertRes);
+      setIsLoading(true);
       let addEventTxn = await flexiPayContract.addEvent(eventId.trim(), eventRsvpFee);
       addEventTxn.wait();
+      setIsLoading(false)
+      message.success("Event added successfully");
     } catch (err) {
+      message.error("Error in adding event");
       console.log(err);
     }
   };
@@ -215,6 +225,8 @@ const CreateEvent = () => {
   };
 
   return (
+    <>
+    {isLoading ? <Loader /> : 
     <div className="ce-par-div">
       <div className="ce-div">
         {/* // admin side operation */}
@@ -373,7 +385,8 @@ const CreateEvent = () => {
           </Form.Item>
         </Form>
       </div>
-    </div>
+    </div>}
+    </>
   );
 };
 
