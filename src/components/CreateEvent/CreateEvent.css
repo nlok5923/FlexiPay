@@ -26,6 +26,7 @@
 .ant-input {
     background-color: rgb(48, 49, 51) !important;
     border-radius: 0.5vw !important;
+    color: #fff !important;
 }
 .ant-input-status-success {
     color: white !important;
@@ -60,6 +61,9 @@
     background-color: rgb(48, 49, 51) !important;
     border-radius: 0.5vw !important;
 }
+.ant-picker-input > input {
+    color: #fff !important;
+}
 .anticon-swap-right {
     color: white !important;
 }
@@ -68,4 +72,16 @@
 }
 .ant-picker-input:nth-child() {
     color: white !important;
+}
+.ant-upload.ant-upload-drag {
+    background-color: rgb(48, 49, 51) !important;
+    color: #fff !important;
+}
+.ant-upload-text {
+    color: #fff !important;
+    font-family: 'ManropeMedium';
+    font-size: 0.8rem;
+}
+.ant-upload-hint { 
+    color: rgb(112, 113, 114) !important;
 }
