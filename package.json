@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@rainbow-me/rainbowkit": "^0.5.1",
+    "@superfluid-finance/sdk-core": "^0.5.6",
     "@tableland/sdk": "^3.1.1",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.3.0",
