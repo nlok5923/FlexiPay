@@ -1,6 +1,6 @@
 import { React, useState, useEffect } from "react";
 import "./CreateEvent.css";
-import { Wallet, providers } from "ethers";
+import { Wallet, providers, Contract } from "ethers";
 import { connect } from "@tableland/sdk";
 import {
   Form,
@@ -16,6 +16,9 @@ import {
 import { Buffer } from "buffer";
 import Axios from "axios";
 import { InboxOutlined } from "@ant-design/icons";
+import addresses from '../../config'
+import FlexiPayArtifact from '../../Ethereum/FlexiPay.json'
+import GetContract from "../../hooks/GetContract";
 
 // Event details table: _80001_1803
 const { Dragger } = Upload;
@@ -32,6 +35,8 @@ const CreateEvent = () => {
     eventRate: "1",
     eventRsvpFee: "1",
   });
+
+  let flexiPayContract = GetContract(addresses.FlexiPay, FlexiPayArtifact.abi);
 
   const props = {
     name: "file",
@@ -74,8 +79,8 @@ const CreateEvent = () => {
       url: "https://api.pinata.cloud/pinning/pinFileToIPFS",
       data: formData,
       headers: {
-        pinata_api_key: `private`,
-        pinata_secret_api_key: `private`,
+        pinata_api_key: `5dbd25d2575c28d30c75`,
+        pinata_secret_api_key: `31e6245d30d45e928d0bdc05fec2b83914663311976825e465d1a57fa1af5c7c`,
         "Content-Type": "multipart/form-data",
       },
     });
@@ -122,7 +127,7 @@ const CreateEvent = () => {
   const initTableLand = async () => {
     try {
       const wallet = new Wallet(
-        "private"
+        "2999e4ada1397ed384770e9fd58ad9b41ebffb248f89c8182403f82c48aeae9e"
       );
       const provider = new providers.AlchemyProvider(
         "maticmum",
@@ -193,6 +198,8 @@ const CreateEvent = () => {
       console.log(" this is insert query ", INSERT_QUERY);
       let writeRes = await tableState.write(INSERT_QUERY);
       console.log("Added event to event table", writeRes);
+      let addEventTxn = await flexiPayContract.addEvent(eventId.trim(), eventRsvpFee);
+      addEventTxn.wait();
     } catch (err) {
       console.log(err);
     }
