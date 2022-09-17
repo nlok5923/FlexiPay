@@ -1,0 +1,41 @@
+.lp-intro-div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.lp-intro-heading {
+    font-size: 3.8rem;
+    font-family: 'ManropeExtrabold';
+    color: #fff;
+    text-align: left;
+    background-color: rgba(131, 121, 121, 0.603);
+    padding: 10vh 5vw;
+    border-top-right-radius: 0.8vw;
+    border-bottom-right-radius: 0.8vw;
+}
+.lp-intro-img {
+    width: 43.5%;
+}
+.lp-btn-div {
+    border-top-right-radius: 0.5vw !important;
+    border-top-left-radius: 0.5vw !important;
+    background-color: #0947c4 !important;
+    border-color: #85a7ec !important;
+    padding: 2vh 2vw;
+    cursor: pointer;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.lp-btn-div:hover {
+    background-color: #0055ff !important;
+}
+.lp-di-text {
+    font-family: 'ManropeMedium';
+    font-size: 1.2rem;
+}
+.lp-di-icon {
+    font-size: 1.2rem;
+    margin-left: 2%;
+}
