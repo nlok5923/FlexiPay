@@ -11,6 +11,7 @@ import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { chain, configureChains, createClient, WagmiConfig } from "wagmi";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
+import AboutVlad from './components/AboutVlad/AboutVlad';
 
 const { chains, provider } = configureChains(
   [chain.polygonMumbai, chain.ropsten, chain.goerli, chain.hardhat],
@@ -34,7 +35,7 @@ const wagmiClient = createClient({
 function App() {
   return (
     <div className='App'>
-            <WagmiConfig client={wagmiClient}>
+      <WagmiConfig client={wagmiClient}>
         <RainbowKitProvider chains={chains}>
           <Router>
             <PageLayout>
@@ -43,6 +44,7 @@ function App() {
                 <Route path="/create-event" element={<CreateEvent />} />
                 <Route path="/events" element={<EventList />} />
                 <Route path='/events/:id' element={<EventDetails />} />
+                <Route path='/about-vlad' element={<AboutVlad />} />
               </Routes>
             </PageLayout>
           </Router>

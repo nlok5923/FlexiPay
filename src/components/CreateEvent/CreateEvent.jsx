@@ -264,7 +264,7 @@ const CreateEvent = () => {
               placeholder="Tell us about your event"
               name="About Event"
               onChange={(e) => onChangeHandler(e)}
-              maxRows={6}
+              autoSize={{ minRows: 3, maxRows: 15 }}
             />
           </Form.Item>
           <Form.Item
