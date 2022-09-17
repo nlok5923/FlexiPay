@@ -4,7 +4,7 @@
     align-items: center;
 }
 .lp-intro-heading {
-    font-size: 3.8rem;
+    font-size: 4.3vw;
     font-family: 'ManropeExtrabold';
     color: #fff;
     text-align: left;
@@ -33,9 +33,9 @@
 }
 .lp-di-text {
     font-family: 'ManropeMedium';
-    font-size: 1.2rem;
+    font-size: 1.6vw;
 }
 .lp-di-icon {
-    font-size: 1.2rem;
+    font-size: 1.6vw;
     margin-left: 2%;
 }
