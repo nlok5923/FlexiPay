@@ -236,7 +236,6 @@ const EventDetails = () => {
               <div className="ed-card-text">End Date: {event[5]}</div>
               <div className="ed-card-text">Start Time: {event[6]}</div>
               <div className="ed-card-text">End Time: {event[7]}</div>
-              <div className="ed-card-text">Event Link: {event[8]}</div>
               <div className="ed-card-text">Discord VC Name: {event[9]}</div>
               <div className="ed-card-text">
                 Org MetaMask Address: {event[10]}
@@ -321,7 +320,7 @@ const EventDetails = () => {
               />
               <div
                 className="ed-di-div"
-                onClick={() => window.open(`${discordInvite}`)}
+                onClick={() => window.open(`${event[8]}`)}
               >
                 <img
                   src="/assets/images/discord-logo.png"

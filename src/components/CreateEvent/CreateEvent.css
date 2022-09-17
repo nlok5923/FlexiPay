@@ -93,3 +93,6 @@
     color: #fff !important;
     font-family: 'ManropeRegular';
 }
+.ant-upload-list-item-card-actions {
+    color: #fff !important;
+}
