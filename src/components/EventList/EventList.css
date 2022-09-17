@@ -5,7 +5,10 @@
     font-size: 2rem;
     font-family: 'ManropeBold';
     text-align: center;
-    color: #fff;
+    border-bottom: 2px solid rgb(78, 230, 179);
+    color: #ffff;
+    margin: 4vh auto;
+    width: 50%;
 }
 .el-cover-img {
     width: auto;
