@@ -43,7 +43,7 @@ const AboutVlad = () => {
             alt="discord-logo.png"
             className="av-discord-img"
           />
-          <span className="av-di-text">Discord Invite</span>
+          <span className="av-di-text">Invite Vlad</span>
         </div>
       </div>
     </div>
