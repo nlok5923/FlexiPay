@@ -1,0 +1,80 @@
+.av-div {
+    padding: 0 2vw;
+}
+.av-heading {
+    font-size: 2rem;
+    font-family: 'ManropeBold';
+    text-align: center;
+    border-bottom: 2px solid rgb(78, 230, 179);
+    color: #ffff;
+    margin: 4vh 0;
+}
+.av-profile {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    margin: 8vh 0;
+}
+.av-avatar {
+    width: 20%;
+    border-radius: 100%;
+}
+.av-profile-text {
+    width: 50%;
+    color: #ffff;
+    font-family: 'ManropeRegular';
+    font-size: 1.5rem;
+    margin: 3vh 0;
+}
+.av-wv-div {
+    margin: 10vh 0;
+}
+.av-wv-text {
+    margin: 8vh 0;
+}
+.av-reg-text {
+    width: 100%;
+    color: #ffff;
+    font-family: 'ManropeRegular';
+    font-size: 1rem;
+    line-height: 4.5vh;
+}
+.av-uv-div {
+    margin: 10vh 0;
+}
+.av-uv-ul {
+    margin: 8vh 0;
+}
+.code-snippet {
+    background-color: rgb(48, 47, 47);
+    padding: 0.2% 0.4%;
+    border-radius: 0.4vw;
+    color: rgb(245, 210, 14);
+}
+.av-invite-div {
+    margin: 10vh 0;
+}
+.av-di-div {
+    border-radius: 0.5vw !important;
+    background-color: #0947c4 !important;
+    border-color: #85a7ec !important;
+    padding: 2vh 2vw;
+    cursor: pointer;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50%;
+    margin: 8vh auto;
+}
+.av-discord-img {
+    width: 5%;
+    margin-right: 2%;
+}
+.av-di-text {
+    font-family: 'ManropeMedium';
+    font-size: 1.2rem;
+}
+.av-di-div:hover {
+    background-color: #0055ff !important;
+}
