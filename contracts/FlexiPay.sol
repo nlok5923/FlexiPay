@@ -15,9 +15,9 @@ contract FlexiPay {
         registeredEvents.push(_eventId);
     }
 
-    function registerForEvent(string memory _eventId) external payable {
-        require(msg.value >= eventLockingFee[_eventId], "You should pay amount equal to locking fee");
-        eventLockingFee[_eventId] += msg.value;
+    function registerForEvent(string memory _eventId, uint256 tokens) external {
+        require(tokens >= eventLockingFee[_eventId], "You should pay amount equal to locking fee");
+        eventLockingFee[_eventId] += tokens;
     }
 
     function getEventLockedFee(string memory _eventId) external view returns(uint256)  {
