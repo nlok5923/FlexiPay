@@ -105,6 +105,7 @@ const EventList = () => {
       <div className='el-grid-div'>
         {
             events ?
+            events.rows.length > 0 ?
             events.rows.map((item, index) => {
               return (
                 <Card
@@ -120,6 +121,8 @@ const EventList = () => {
                 </Card>
               )
             })
+            :
+            <h2 className='el-no-events'>No Events to show : (</h2>
             :
             <Loader />
         }
