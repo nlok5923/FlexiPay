@@ -367,6 +367,16 @@ const EventDetails = () => {
               </Button>
             </div>
           ) : null}
+          <div className="ed-wf-div">
+            <h1 className="ed-heading">Withdraw RSVP Fees</h1>
+            <Alert message="The RSVP fees would be transferred to the MetaMask account you are currently signed in with." className="ed-alert" type="info" showIcon />
+            <div
+                className="ed-di-div"
+                onClick={() => {}}
+              >
+                <span className="ed-di-text">Withdraw RSVP Fees</span>
+              </div>
+          </div>
         </div>
       ) : (
         <Loader />
