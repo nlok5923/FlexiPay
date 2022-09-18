@@ -12,7 +12,9 @@
     font-size: 2rem;
     font-family: 'ManropeBold';
     text-align: center;
-    color: rgb(255, 255, 255);
+    border-bottom: 2px solid rgb(78, 230, 179);
+    color: #ffff;
+    margin: 4vh 0;
 }
 .ce-form {
     margin: 5vh 0;
@@ -92,4 +94,7 @@
 .ant-upload-list-item-name {
     color: #fff !important;
     font-family: 'ManropeRegular';
+}
+.ant-upload-list-item-card-actions {
+    color: #fff !important;
 }

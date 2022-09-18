@@ -4,6 +4,7 @@ import { Menu } from 'antd';
 import { MdEventNote } from 'react-icons/md';
 import { BiAddToQueue } from 'react-icons/bi';
 import { useNavigate } from 'react-router-dom';
+import { GiDeathSkull } from 'react-icons/gi'
 
 
 function getItem(label, key, icon, children, type) {
@@ -19,6 +20,7 @@ function getItem(label, key, icon, children, type) {
 const items = [
   getItem('Create Event', 'create-event', <BiAddToQueue style={{ fontSize: '1.2vw', color: 'white' }}/>),
   getItem('Events', 'events', <MdEventNote style={{ fontSize: '1.2vw', color: 'white' }}/>),
+  getItem('About Vlad', 'about-vlad', <GiDeathSkull style={{ fontSize: '1.2vw', color: 'white' }}/>),
 ];
 
 const SideNav = (props) => {

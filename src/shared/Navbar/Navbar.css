@@ -17,12 +17,14 @@
 }
 .nav-logo-div {
     padding: 0.8vh 1.5vw;
+    cursor: pointer;
 }
 .nav-logo {
-    font-size: 1.2rem;
+    width: 15%;
     margin-right: 0.8rem;
 }
 .logo-heading {
     font-family: 'ManropeBold';
     font-size: 1.2rem;
+    color: white;
 }

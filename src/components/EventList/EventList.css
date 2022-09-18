@@ -5,7 +5,10 @@
     font-size: 2rem;
     font-family: 'ManropeBold';
     text-align: center;
-    color: #fff;
+    border-bottom: 2px solid rgb(78, 230, 179);
+    color: #ffff;
+    margin: 4vh auto;
+    width: 50%;
 }
 .el-cover-img {
     width: auto;
@@ -51,10 +54,26 @@
     background-color: rgb(48, 49, 51)!important;
     cursor: pointer !important;
     user-select: none !important;
+    border-radius: 1vw;
 }
 .el-card-price {
     margin: 1vh 0;
 }
 .el-card-address {
     margin: 1vh 0;
+}
+.el-no-events {
+    color: #fff;
+    font-family: 'ManropeRegular';
+}
+.el-no-events-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50vh;
+}
+.el-alert {
+    margin: 3% auto;
+    background-color: transparent;
+    border-radius: 0.5vw;
 }
