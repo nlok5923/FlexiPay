@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import './EventList.css'
-import { Card } from 'antd'
+import { Card, Alert } from 'antd'
 import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import { Wallet, providers } from "ethers";
@@ -114,6 +114,7 @@ const EventList = () => {
                   className='el-card'
                   onClick={()=>navigate(`/events/${item[0]}`)}
                 >
+                  <Alert message={'Event over'} type='success' showIcon className='el-alert' />
                   <h3 className='el-card-heading'>{item[1]}</h3>
                   <h3 className='el-card-heading'>{item[4]} - {item[5]}</h3>
                   <h3 className='el-card-heading'>{item[6]} - {item[7]}</h3>
@@ -122,7 +123,9 @@ const EventList = () => {
               )
             })
             :
-            <h2 className='el-no-events'>No Events to show : (</h2>
+            <div className='el-no-events-div'>
+              <h2 className='el-no-events'>No Events to show : (</h2>
+            </div>
             :
             <Loader />
         }
