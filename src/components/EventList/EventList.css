@@ -61,3 +61,7 @@
 .el-card-address {
     margin: 1vh 0;
 }
+.el-no-events {
+    color: #fff;
+    font-family: 'ManropeRegular';
+}
