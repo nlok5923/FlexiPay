@@ -177,6 +177,15 @@ const EventDetails = () => {
   //   console.log("user_meta table name ", name3);
   // }
 
+  const isEventOver = () => {
+    const eventDate = new Date(e);
+    const currentDate = new Date();
+    if (eventDate < currentDate) {
+      return true;
+    }
+    return false;
+  }
+
   const onChangeHandler = (e) => {
     setUserInfo({ ...userInfo, [e.target.id]: e.target.value });
     console.log("updated user data ", userInfo);
@@ -232,6 +241,7 @@ const EventDetails = () => {
             <div className="ed-card">
               <h2 className="ed-card-title">{event[1]}</h2>
               <div className="ed-card-text">{event[3]}</div>
+              <div className="ed-card-text">Event ID: {event[0]}</div>
               <div className="ed-card-text">Start Date: {event[4]}</div>
               <div className="ed-card-text">End Date: {event[5]}</div>
               <div className="ed-card-text">Start Time: {event[6]}</div>
