@@ -38,7 +38,7 @@ const EventDetails = () => {
     username: "",
   });
   const [isLoading, setIsLoading] = useState(false);
-  const event_id = window.location.href.split("/")[4];
+  const event_id = window.location.href.split("/")[5];
   console.log(event_id);
 
   const discordInvite = "https://discord.gg/invite/invite";

@@ -54,7 +54,7 @@
     background-color: rgb(48, 49, 51)!important;
     cursor: pointer !important;
     user-select: none !important;
-    border-radius: 1vw;
+    border-radius: 1vw !important;
 }
 .el-card-price {
     margin: 1vh 0;
