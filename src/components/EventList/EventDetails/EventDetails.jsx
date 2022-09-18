@@ -377,6 +377,15 @@ const EventDetails = () => {
                 <span className="ed-di-text">Withdraw RSVP Fees</span>
               </div>
           </div>
+          <div className="ed-wf-div">
+            <h1 className="ed-heading">Collect NFT</h1>
+            <div
+                className="ed-di-div"
+                onClick={() => {}}
+              >
+                <span className="ed-di-text">Collect NFT</span>
+              </div>
+          </div>
         </div>
       ) : (
         <Loader />
