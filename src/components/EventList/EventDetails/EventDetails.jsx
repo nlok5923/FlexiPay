@@ -177,10 +177,17 @@ const EventDetails = () => {
   //   console.log("user_meta table name ", name3);
   // }
 
-  const isEventOver = () => {
-    const eventDate = new Date(e);
-    const currentDate = new Date();
-    if (eventDate < currentDate) {
+  const dateArr = "01/02/2021".split("/");
+  const date = new Date(dateArr[2], dateArr[1] - 1, dateArr[0]);
+  console.log(date);
+
+  const isEventOver = (endDate, endTime) => {      
+    const currdobj = new Date();
+    const dateArr = endDate.split("/");
+    const timeArr = endTime.split(":");
+    const enddobj = new Date(dateArr[2], dateArr[1] - 1, dateArr[0], timeArr[0], timeArr[1]);
+    if (currdobj > enddobj) {
+      console.log("event is over");
       return true;
     }
     return false;
@@ -255,7 +262,7 @@ const EventDetails = () => {
             </div>
           </div>
 
-          {!isUserRegisteredForEvent ? (
+          {!isUserRegisteredForEvent && !isEventOver(event[5], event[7]) ? (
             <div className="ed-join-event-div">
               <h1 className="ed-heading">Join Event</h1>
               <Alert message="Your current signed in wallet account would be used to register for the event" className="ed-alert" type="info" showIcon />
@@ -377,25 +384,35 @@ const EventDetails = () => {
               </Button>
             </div>
           ) : null}
-          <div className="ed-wf-div">
-            <h1 className="ed-heading">Withdraw RSVP Fees</h1>
-            <Alert message="The RSVP fees would be transferred to the MetaMask account you are currently signed in with." className="ed-alert" type="info" showIcon />
-            <div
-                className="ed-di-div"
-                onClick={() => {}}
-              >
-                <span className="ed-di-text">Withdraw RSVP Fees</span>
+          {
+            isEventOver(event[5], event[7]) && isUserRegisteredForEvent ?
+              <div className="ed-wf-div">
+                <h1 className="ed-heading">Withdraw RSVP Fees</h1>
+                <Alert message="The RSVP fees would be transferred to the MetaMask account you are currently signed in with." className="ed-alert" type="info" showIcon />
+                <div
+                    className="ed-di-div"
+                    onClick={() => {}}
+                  >
+                    <span className="ed-di-text">Withdraw RSVP Fees</span>
+                  </div>
               </div>
-          </div>
-          <div className="ed-wf-div">
-            <h1 className="ed-heading">Collect NFT</h1>
-            <div
-                className="ed-di-div"
-                onClick={() => {}}
-              >
-                <span className="ed-di-text">Collect NFT</span>
+              :
+              null
+          }
+          {
+            isEventOver(event[5], event[7]) && isUserRegisteredForEvent ? 
+              <div className="ed-wf-div">
+                <h1 className="ed-heading">Collect NFT</h1>
+                <div
+                    className="ed-di-div"
+                    onClick={() => {}}
+                  >
+                    <span className="ed-di-text">Collect NFT</span>
+                  </div>
               </div>
-          </div>
+              :
+              null
+          }
         </div>
       ) : (
         <Loader />
