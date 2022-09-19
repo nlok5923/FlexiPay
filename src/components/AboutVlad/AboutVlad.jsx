@@ -3,7 +3,7 @@ import './AboutVlad.css'
 
 const AboutVlad = () => {
 
-  const discordInvite = "https://discord.com/oauth2/authorize?client_id=1013031057005740072&permissions=0&scope=bot%20applications.commands"
+  const discordInvite = "https://discord.com/api/oauth2/authorize?client_id=1013031057005740072&permissions=8&scope=bot%20applications.commands"
 
   return (
     <div className='av-div'>
