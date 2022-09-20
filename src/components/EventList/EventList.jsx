@@ -73,7 +73,7 @@ const EventList = () => {
       );
       const provider = new providers.AlchemyProvider(
         "maticmum",
-        process.env.REACT_APP_QUICKNODE_KEY
+        process.env.REACT_APP_ALCHEMY_API_KEY
       );
       const signer = wallet.connect(provider);
       const tableland = await connect({

@@ -60,7 +60,7 @@ const EventDetails = () => {
       );
       const provider = new providers.AlchemyProvider(
         "maticmum",
-        process.env.REACT_APP_QUICKNODE_KEY
+        process.env.REACT_APP_ALCHEMY_API_KEY
       );
       const signer = wallet.connect(provider);
       const tableland = await connect({
@@ -95,7 +95,7 @@ const EventDetails = () => {
           setIsUserRegisteredForEvent(true);
 
           const url =
-            process.env.REACT_APP_QUICK_NODE_URL;
+            process.env.REACT_APP_ALCHEMY_URL;
           const customHttpProvider = new ethers.providers.JsonRpcProvider(url);
 
           let sf = await Framework.create({

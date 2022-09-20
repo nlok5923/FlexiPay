@@ -17,7 +17,7 @@ import { MoralisProvider } from "react-moralis";
 const { chains, provider } = configureChains(
   [chain.polygonMumbai, chain.ropsten, chain.goerli, chain.hardhat],
   [
-    alchemyProvider({ alchemyId: process.env.REACT_APP_QUICK_NODE_URL }),
+    alchemyProvider({ alchemyId: process.env.REACT_APP_ALCHEMY_URL }),
     publicProvider(),
   ]
 );
