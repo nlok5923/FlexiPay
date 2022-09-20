@@ -17,7 +17,7 @@ import { MoralisProvider } from "react-moralis";
 const { chains, provider } = configureChains(
   [chain.polygonMumbai, chain.ropsten, chain.goerli, chain.hardhat],
   [
-    alchemyProvider({ alchemyId: "https://eth-goerli.alchemyapi.io/v2/V5p1PckEwUqIq5s5rA2zvwRKH0V9Hslr" }),
+    alchemyProvider({ alchemyId: process.env.REACT_APP_QUICK_NODE_URL }),
     publicProvider(),
   ]
 );
@@ -58,8 +58,3 @@ function App() {
 }
 
 export default App;
-// $ curl -X GET https://api.covalenthq.com/v1/1/block_v2/5000000/ \
-//    -u ckey_92f7a815779a4451a77bb98f392:
-//    -H 'Content-Type: application/json'
-
-// address to use: 0xc4145d530E7FF09a7051343eB8e17181EC94fdd5

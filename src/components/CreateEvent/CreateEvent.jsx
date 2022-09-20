@@ -167,7 +167,7 @@ const CreateEvent = () => {
       const wallet = new Wallet(process.env.REACT_APP_PRIVATE_KEY);
       const provider = new providers.AlchemyProvider(
         "maticmum",
-        process.env.REACT_APP_ALCHEMY_API_KEY
+        process.env.REACT_APP_QUICKNODE_KEY
       );
       const signer = wallet.connect(provider);
       const tableland = await connect({
@@ -225,11 +225,12 @@ const CreateEvent = () => {
         isCOP,
       } = event;
       const eventPosterHash = await uploadEventPoster(eventPoster);
-      return
       console.log(" this is event poster hash ", eventPosterHash);
       console.log(" this is event NFT file ", eventNFTFile);
       const eventNFTFileHash = await uploadEventPoster(eventNFTFile);
       // console.log("this is event data ", event);
+      console.log(" this is event nft file hash ", eventNFTFileHash);
+
       const INSERT_QUERY = `INSERT INTO ${tableNames.EVENT_DETAILS} 
       (event_id, 
         event_name, 
@@ -426,7 +427,7 @@ const CreateEvent = () => {
                   type="number"
                   min="0.000000000000000001"
                   step="0.000000000000000001"
-                  placeholder="Enter the rate of the stream in DAI"
+                  placeholder="Enter the rate of the stream in DAI (amount in wei/sec)"
                   name="Event Rate"
                   onChange={(e) => onChangeHandler(e)}
                 />

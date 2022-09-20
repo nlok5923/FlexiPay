@@ -60,7 +60,7 @@ const EventDetails = () => {
       );
       const provider = new providers.AlchemyProvider(
         "maticmum",
-        process.env.REACT_APP_ALCHEMY_API_KEY
+        process.env.REACT_APP_QUICKNODE_KEY
       );
       const signer = wallet.connect(provider);
       const tableland = await connect({
@@ -95,7 +95,7 @@ const EventDetails = () => {
           setIsUserRegisteredForEvent(true);
 
           const url =
-            process.env.REACT_APP_ALCHEMY_URL;
+            process.env.REACT_APP_QUICK_NODE_URL;
           const customHttpProvider = new ethers.providers.JsonRpcProvider(url);
 
           let sf = await Framework.create({
@@ -149,6 +149,17 @@ const EventDetails = () => {
     initTableLand();
   }, []);
 
+  const isUserExist = async (username) => {
+    try {
+      // username = "Nitanshu Lokhande"
+      let FIND_USER_NAME = `SELECT username from ${tableNames.USER_META_ADDRESS} where username = '${username}'`;
+      const isUserNameExist = await tableLandState.read(FIND_USER_NAME);
+      return isUserNameExist.rows.length > 0;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   const registerForEvent = async () => {
     try {
       const { name, username } = userInfo;
@@ -158,9 +169,12 @@ const EventDetails = () => {
         const USER_USER_META_QUERY = `INSERT INTO ${tableNames.USER_META_ADDRESS} (username, user_meta_address) VALUES ('${username}', '${userAddress}')`;
         const insertResp = await tableLandState.write(EVENTID_USER_QUERY);
         console.log(insertResp);
-        const insertRespMeta = await tableLandState.write(USER_USER_META_QUERY);
-        console.log(insertRespMeta);
-        // flexiPayContract
+        if(!isUserExist(username)) {
+          // first check if there is already an entry for user in user meta address table if yes then skip below write op
+          const insertRespMeta = await tableLandState.write(USER_USER_META_QUERY);
+          console.log(insertRespMeta);
+        }
+
         let eventRsvpTxn = await superFakeDAITokenContract.transfer(
           addresses.FlexiPay,
           ethers.utils.parseEther(String(event[13]))
@@ -184,16 +198,35 @@ const EventDetails = () => {
     }
   };
 
+  const isEventOver = (endDate, endTime) => {      
+    const currdobj = new Date();
+    const dateArr = endDate.split("/");
+    const timeArr = endTime.split(":");
+    const enddobj = new Date(dateArr[2], dateArr[1] - 1, dateArr[0], timeArr[0], timeArr[1]);
+    if (currdobj > enddobj) {
+      console.log("event is over");
+      return true;
+    }
+    return false;
+  }
+
   const onChangeHandler = (e) => {
     setUserInfo({ ...userInfo, [e.target.id]: e.target.value });
     console.log("updated user data ", userInfo);
   };
 
+  const calculateFlowRate = () => {
+    const amountInWei = ethers.BigNumber.from(event[12]);
+    const monthlyAmount = ethers.utils.formatEther(amountInWei.toString());
+    return monthlyAmount * 3600 * 24 * 30;
+  }
+
   const startStream = async () => {
     try {
       console.log(" this is shitty receiver ", event[10]);
+      let calculatedFlowRate = calculateFlowRate();
       const createFlowOperation = superFluidInstance.cfaV1.createFlow({
-        flowRate: 1000000, // event flow rate
+        flowRate: calculatedFlowRate, // event flow rate
         receiver: event[10], // event org meta address
         superToken: addresses.SuperFakeDAIToken,
       });
@@ -275,10 +308,12 @@ const EventDetails = () => {
           alt={"Event Cover Img"}
           className="ed-img"
         />
+        {/* <button onClick={() => isUserExist()} > check user </button> */}
         <div className="ed-text-div">
           <div className="ed-card">
             <h2 className="ed-card-title">{event[1]}</h2>
             <div className="ed-card-text">{event[3]}</div>
+            <div className="ed-card-text">Event ID: {event[0]}</div>
             <div className="ed-card-text">Start Date: {event[4]}</div>
             <div className="ed-card-text">End Date: {event[5]}</div>
             <div className="ed-card-text">Start Time: {event[6]}</div>
@@ -287,12 +322,12 @@ const EventDetails = () => {
             <div className="ed-card-text">
               Org MetaMask Address: {event[10]}
             </div>
-            <div className="ed-card-text">Event Rate: {event[11]}</div>
-            <div className="ed-card-text">Event RSVP Fee: {event[12]}</div>
+            <div className="ed-card-text">Event Rate: {event[12]}</div>
+            <div className="ed-card-text">Event RSVP Fee: {event[13]}</div>
           </div>
         </div>
 
-        {!isUserRegisteredForEvent ? (
+        {!isUserRegisteredForEvent && !isEventOver(event[5], event[7]) ? (
           <div className="ed-join-event-div">
             <h1 className="ed-heading">Join Event</h1>
             <Alert message="Your current signed in wallet account would be used to register for the event" className="ed-alert" type="info" showIcon />
@@ -415,7 +450,7 @@ const EventDetails = () => {
           </div>
         ) : null}
 
-        {isUserRegisteredForEvent ? <>
+        {isUserRegisteredForEvent && isEventOver(event[5], event[7]) ? <>
         <div className="ed-wf-div">
           <h1 className="ed-heading">Withdraw RSVP Fees</h1>
           <Alert message="The RSVP fees would be transferred to the MetaMask account you are currently signed in with." className="ed-alert" type="info" showIcon />
