@@ -12,16 +12,17 @@ import {
   Upload,
   Spin,
   message,
-  Radio
+  Radio,
 } from "antd";
 import { Buffer } from "buffer";
 import Axios from "axios";
 import { InboxOutlined } from "@ant-design/icons";
-import addresses from '../../config'
-import FlexiPayArtifact from '../../Ethereum/FlexiPay.json'
+import addresses from "../../config";
+import FlexiPayArtifact from "../../Ethereum/FlexiPay.json";
 import GetContract from "../../hooks/GetContract";
 import Loader from "../../shared/Loader/Loader";
 import tableNames from "../../databaseConfig";
+import { useMoralis, useMoralisFile } from "react-moralis";
 
 // Event details table: _80001_1963
 const { Dragger } = Upload;
@@ -33,7 +34,8 @@ const CreateEvent = () => {
   // event state init with sample data
   const [event, setEvent] = useState({
     eventName: "Stream it",
-    aboutEvent: "But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth, the master-builder of human happiness. No one rejects, dislikes, or avoids pleasure itself, because it is pleasure, but because those who do not know how to pursue pleasure rationally encounter consequences that are extremely painful. Nor again is there anyone who loves or pursues or desires to obtain pain of itself, because it is pain, but because occasionally circumstances occur in which toil and pain can procure him some great pleasure. To take a trivial example, which of us ever undertakes laborious physical exercise, except to obtain some advantage from it? But who has any right to find fault with a man who chooses to enjoy a pleasure that has no annoying consequences, or one who avoids a pain that produces no resultant pleasure?",
+    aboutEvent:
+      "But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth, the master-builder of human happiness. No one rejects, dislikes, or avoids pleasure itself, because it is pleasure, but because those who do not know how to pursue pleasure rationally encounter consequences that are extremely painful. Nor again is there anyone who loves or pursues or desires to obtain pain of itself, because it is pain, but because occasionally circumstances occur in which toil and pain can procure him some great pleasure. To take a trivial example, which of us ever undertakes laborious physical exercise, except to obtain some advantage from it? But who has any right to find fault with a man who chooses to enjoy a pleasure that has no annoying consequences, or one who avoids a pain that produces no resultant pleasure?",
     eventStartEndDate: ["01/02/2021", "01/02/2021"],
     eventStartEndTime: ["01:02:03", "01:02:03"],
     eventLink: "https://discord.gg/qtVsaAcP",
@@ -47,6 +49,8 @@ const CreateEvent = () => {
   });
 
   let flexiPayContract = GetContract(addresses.FlexiPay, FlexiPayArtifact.abi);
+  const { authenticate, isAuthenticated, user } = useMoralis();
+  const { error, isUploading, moralisFile, saveFile } = useMoralisFile();
 
   const props = {
     name: "file",
@@ -113,22 +117,14 @@ const CreateEvent = () => {
   };
 
   const uploadEventPoster = async (eventFile) => {
-    const formData = new FormData();
-    console.log(" this is file ", eventFile);
-    formData.append("file", eventFile);
-    const res = await Axios({
-      method: "post",
-      url: process.env.REACT_APP_PINATA_CLOUD_URL,
-      data: formData,
-      headers: {
-        pinata_api_key: process.env.REACT_APP_PINATA_API_KEY,
-        pinata_secret_api_key: process.env.REACT_APP_PINATA_API_SECRET,
-        "Content-Type": "multipart/form-data",
-      },
-    });
-    console.log(" this is response after uploading event poster ", res);
-    const { IpfsHash } = res.data;
-    return IpfsHash;
+    if (!isAuthenticated) {
+      await authenticate();
+    }
+    let response = await saveFile("file", eventFile, { saveIPFS: true });
+    console.log("response after uploading file via moralis", response._hash);
+    console.log(response.ipfs());
+
+    return response._hash;
   };
 
   const characters =
@@ -168,9 +164,7 @@ const CreateEvent = () => {
 
   const initTableLand = async () => {
     try {
-      const wallet = new Wallet(
-        process.env.REACT_APP_PRIVATE_KEY
-      );
+      const wallet = new Wallet(process.env.REACT_APP_PRIVATE_KEY);
       const provider = new providers.AlchemyProvider(
         "maticmum",
         process.env.REACT_APP_ALCHEMY_API_KEY
@@ -211,7 +205,7 @@ const CreateEvent = () => {
     } catch (err) {
       console.log(err);
     }
-  }
+  };
 
   const createEvent = async () => {
     try {
@@ -231,6 +225,8 @@ const CreateEvent = () => {
         isCOP,
       } = event;
       const eventPosterHash = await uploadEventPoster(eventPoster);
+      return
+      console.log(" this is event poster hash ", eventPosterHash);
       console.log(" this is event NFT file ", eventNFTFile);
       const eventNFTFileHash = await uploadEventPoster(eventNFTFile);
       // console.log("this is event data ", event);
@@ -269,14 +265,20 @@ const CreateEvent = () => {
         '${eventNFTFileHash}');`;
       setIsLoading(true);
       console.log(" this is insert query ", INSERT_QUERY);
-      const EVENT_INSERT_QUERY = `INSERT INTO ${tableNames.EVENT_ORG_ADDRESS} (event_id, org_meta_address) VALUES ('${eventId.trim()}', '${orgMetaMaskAddress}');`;
+      const EVENT_INSERT_QUERY = `INSERT INTO ${
+        tableNames.EVENT_ORG_ADDRESS
+      } (event_id, org_meta_address) VALUES ('${eventId.trim()}', '${orgMetaMaskAddress}');`;
       let writeRes = await tableState.write(INSERT_QUERY);
       let eventInsertRes = await tableState.write(EVENT_INSERT_QUERY);
       console.log("Added event to event table", writeRes);
       console.log("Added event to event table", eventInsertRes);
-      let addEventTxn = await flexiPayContract.addEvent(eventId.trim(), eventRsvpFee, { gasLimit: "9000000" });
+      let addEventTxn = await flexiPayContract.addEvent(
+        eventId.trim(),
+        eventRsvpFee,
+        { gasLimit: "9000000" }
+      );
       addEventTxn.wait();
-      setIsLoading(false)
+      setIsLoading(false);
       message.success("Event added successfully");
     } catch (err) {
       message.error("Error in adding event");
@@ -295,228 +297,232 @@ const CreateEvent = () => {
 
   return (
     <>
-    {isLoading ? <Loader /> : 
-    <div className="ce-par-div">
-      <div className="ce-div">
-        {/* // admin side operation */}
-        {/* <button onClick={() => readTable()}>Read</button> */}
-        {/* <button className='ce-btn' onClick={() => createTable()}>Create Table</button> */}
-        {/* <button onClick={() => deleteTableEntries()}> Clear Everything </button> */}
-        <h1 className="ce-heading">Create Event</h1>
-        <Form className="ce-form" form={form} layout={"vertical"}>
-          <Form.Item
-            className="ce-form-label"
-            label="Event Name"
-            name="eventName"
-            rules={[{ required: true }]}
-          >
-            <Input
-              placeholder="Give some name to your event"
-              name="Event Name"
-              onChange={(e) => onChangeHandler(e)}
-            />
-          </Form.Item>
-          <Form.Item
-            className="ce-form-label"
-            label="About Event"
-            name="aboutEvent"
-            rules={[{ required: true }]}
-          >
-            <TextArea
-              placeholder="Tell us about your event"
-              name="About Event"
-              onChange={(e) => onChangeHandler(e)}
-              autoSize={{ minRows: 3, maxRows: 15 }}
-            />
-          </Form.Item>
-          <Form.Item
-            className="ce-form-label"
-            label="Start Date and End Date"
-            name="eventStartEndDate"
-            rules={[{ required: true }]}
-          >
-            <DatePicker.RangePicker
-              style={{ color: "#fff" }}
-              placement="topLeft"
-              format={"DD/MM/YYYY"}
-              onChange={(_, dateArr) => {
-                setEvent({
-                  ...event,
-                  eventStartEndDate: dateArr,
-                });
-              }}
-            />
-          </Form.Item>
-          <Form.Item
-            className="ce-form-label"
-            label="Start Time and End Time"
-            name="eventStartEndTime"
-            rules={[{ required: true }]}
-          >
-            <TimePicker.RangePicker
-              style={{ color: "#fff" }}
-              className="ce-date-picker"
-              onChange={(_, timeArr) => {
-                setEvent({
-                  ...event,
-                  eventStartEndTime: timeArr,
-                });
-              }}
-            />
-          </Form.Item>
-          <Form.Item
-            className="ce-form-label"
-            label="Event Link"
-            name="eventLink"
-            rules={[{ required: true }]}
-          >
-            <Input
-              placeholder="Enter the link of your event"
-              name="Event Link"
-              onChange={(e) => onChangeHandler(e)}
-            />
-          </Form.Item>
-          <Form.Item
-            className="ce-form-label"
-            label="Discord VC Name"
-            name="discordVcName"
-            rules={[{ required: true }]}
-          >
-            <Input
-              placeholder="Enter the name of your discord VC"
-              name="Discord VC Name"
-              onChange={(e) => onChangeHandler(e)}
-            />
-          </Form.Item>
-          <Form.Item
-            className="ce-form-label"
-            label="Organizer MetaMask Address"
-            name="orgMetaMaskAddress"
-            rules={[{ required: true }]}
-          >
-            <Input
-              placeholder="Enter your MetaMask address"
-              name="Organizer MetaMask Address"
-              onChange={(e) => onChangeHandler(e)}
-            />
-          </Form.Item>
-          <Form.Item
-            className="ce-form-label"
-            label="Organizer Discord Username"
-            name="orgDiscordUsername"
-            rules={[{ required: true}]}
-          >
-            <Input
-              placeholder="ex: strawhat#1234"
-              name="Organizer Discord Username"
-              onChange={(e) => onChangeHandler(e)}
-            />
-          </Form.Item>
-          <Form.Item
-            className="ce-form-label"
-            label="Event Rate"
-            name="eventRate"
-            rules={[{ required: true }]}
-          >
-            <Input
-              type="number"
-              min="0.000000000000000001"
-              step="0.000000000000000001"
-              placeholder="Enter the rate of the stream in DAI"
-              name="Event Rate"
-              onChange={(e) => onChangeHandler(e)}
-            />
-          </Form.Item>
-          <Form.Item
-            className="ce-form-label"
-            label="Event RSVP Fee"
-            name="eventRsvpFee"
-            rules={[{ required: true }]}
-          >
-            <Input
-              type="number"
-              min="0.000000000000000001"
-              step="0.000000000000000001"
-              placeholder="Enter the RSVP fee in DAI"
-              name="Event RSVP Fee"
-              onChange={(e) => onChangeHandler(e)}
-            />
-          </Form.Item>
-          <Form.Item
-            className="ce-form-label"
-            label="Upload Event Poster Image"
-            name="Event Poster Image"
-            rules={[{ required: true }]}
-          >
-            <Dragger {...props}>
-              <p className="ant-upload-drag-icon">
-                <InboxOutlined />
-              </p>
-              <p className="ant-upload-text">
-                Click or drag file to this area to upload
-              </p>
-              <p className="ant-upload-hint">
-                Support for a single or bulk upload. Strictly prohibit from
-                uploading company data or other band files
-              </p>
-            </Dragger>
-          </Form.Item>
-          <Form.Item
-            className="ce-form-label"
-            label="Would you like to provide a certificate of participation in form of NFT to attendees ?"
-            name="certificate of participation choice"
-            rules={[{ required: true }]}
-          >
-            <Radio.Group
-              onChange={(e) => {
-                setEvent({
-                  ...event,
-                  isCOP: e.target.value,
-                });
-              }}
-              value={event.isCOP}
-            >
-              <Radio value={true} className='ce-radio-choice' >Yes</Radio>
-              <Radio value={false} className='ce-radio-choice' >No</Radio>
-            </Radio.Group>
-          </Form.Item>
-          {
-            event.isCOP ? 
-            <Form.Item
-              className="ce-form-label"
-              label="Upload the NFT image"
-              name="nftImage"
-              rules={[{ required: true }]}
-            >
-              <Dragger {...nftImageDaggerProps}>
-                <p className="ant-upload-drag-icon">
-                  <InboxOutlined />
-                </p>
-                <p className="ant-upload-text">
-                  Click or drag file to this area to upload
-                </p>
-                <p className="ant-upload-hint">
-                  Support for a single or bulk upload. Strictly prohibit from
-                  uploading company data or other band files
-                </p>
-              </Dragger>
-            </Form.Item>
-            :
-            null
-          }
-          <Form.Item className="ce-submit-form-item">
-            <Button
-              className="ce-submit-btn"
-              type="primary"
-              htmlType="submit"
-              onClick={() => createEvent()}
-            >
-              Create Event
-            </Button>
-          </Form.Item>
-        </Form>
-      </div>
-    </div>}
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <div className="ce-par-div">
+          <div className="ce-div">
+            {/* // admin side operation */}
+            {/* <button onClick={() => readTable()}>Read</button> */}
+            {/* <button className='ce-btn' onClick={() => createTable()}>Create Table</button> */}
+            {/* <button onClick={() => deleteTableEntries()}> Clear Everything </button> */}
+            <h1 className="ce-heading">Create Event</h1>
+            <Form className="ce-form" form={form} layout={"vertical"}>
+              <Form.Item
+                className="ce-form-label"
+                label="Event Name"
+                name="eventName"
+                rules={[{ required: true }]}
+              >
+                <Input
+                  placeholder="Give some name to your event"
+                  name="Event Name"
+                  onChange={(e) => onChangeHandler(e)}
+                />
+              </Form.Item>
+              <Form.Item
+                className="ce-form-label"
+                label="About Event"
+                name="aboutEvent"
+                rules={[{ required: true }]}
+              >
+                <TextArea
+                  placeholder="Tell us about your event"
+                  name="About Event"
+                  onChange={(e) => onChangeHandler(e)}
+                  autoSize={{ minRows: 3, maxRows: 15 }}
+                />
+              </Form.Item>
+              <Form.Item
+                className="ce-form-label"
+                label="Start Date and End Date"
+                name="eventStartEndDate"
+                rules={[{ required: true }]}
+              >
+                <DatePicker.RangePicker
+                  style={{ color: "#fff" }}
+                  placement="topLeft"
+                  format={"DD/MM/YYYY"}
+                  onChange={(_, dateArr) => {
+                    setEvent({
+                      ...event,
+                      eventStartEndDate: dateArr,
+                    });
+                  }}
+                />
+              </Form.Item>
+              <Form.Item
+                className="ce-form-label"
+                label="Start Time and End Time"
+                name="eventStartEndTime"
+                rules={[{ required: true }]}
+              >
+                <TimePicker.RangePicker
+                  style={{ color: "#fff" }}
+                  className="ce-date-picker"
+                  onChange={(_, timeArr) => {
+                    setEvent({
+                      ...event,
+                      eventStartEndTime: timeArr,
+                    });
+                  }}
+                />
+              </Form.Item>
+              <Form.Item
+                className="ce-form-label"
+                label="Event Link"
+                name="eventLink"
+                rules={[{ required: true }]}
+              >
+                <Input
+                  placeholder="Enter the link of your event"
+                  name="Event Link"
+                  onChange={(e) => onChangeHandler(e)}
+                />
+              </Form.Item>
+              <Form.Item
+                className="ce-form-label"
+                label="Discord VC Name"
+                name="discordVcName"
+                rules={[{ required: true }]}
+              >
+                <Input
+                  placeholder="Enter the name of your discord VC"
+                  name="Discord VC Name"
+                  onChange={(e) => onChangeHandler(e)}
+                />
+              </Form.Item>
+              <Form.Item
+                className="ce-form-label"
+                label="Organizer MetaMask Address"
+                name="orgMetaMaskAddress"
+                rules={[{ required: true }]}
+              >
+                <Input
+                  placeholder="Enter your MetaMask address"
+                  name="Organizer MetaMask Address"
+                  onChange={(e) => onChangeHandler(e)}
+                />
+              </Form.Item>
+              <Form.Item
+                className="ce-form-label"
+                label="Organizer Discord Username"
+                name="orgDiscordUsername"
+                rules={[{ required: true }]}
+              >
+                <Input
+                  placeholder="ex: strawhat#1234"
+                  name="Organizer Discord Username"
+                  onChange={(e) => onChangeHandler(e)}
+                />
+              </Form.Item>
+              <Form.Item
+                className="ce-form-label"
+                label="Event Rate"
+                name="eventRate"
+                rules={[{ required: true }]}
+              >
+                <Input
+                  type="number"
+                  min="0.000000000000000001"
+                  step="0.000000000000000001"
+                  placeholder="Enter the rate of the stream in DAI"
+                  name="Event Rate"
+                  onChange={(e) => onChangeHandler(e)}
+                />
+              </Form.Item>
+              <Form.Item
+                className="ce-form-label"
+                label="Event RSVP Fee"
+                name="eventRsvpFee"
+                rules={[{ required: true }]}
+              >
+                <Input
+                  type="number"
+                  min="0.000000000000000001"
+                  step="0.000000000000000001"
+                  placeholder="Enter the RSVP fee in DAI"
+                  name="Event RSVP Fee"
+                  onChange={(e) => onChangeHandler(e)}
+                />
+              </Form.Item>
+              <Form.Item
+                className="ce-form-label"
+                label="Upload Event Poster Image"
+                name="Event Poster Image"
+                rules={[{ required: true }]}
+              >
+                <Dragger {...props}>
+                  <p className="ant-upload-drag-icon">
+                    <InboxOutlined />
+                  </p>
+                  <p className="ant-upload-text">
+                    Click or drag file to this area to upload
+                  </p>
+                  <p className="ant-upload-hint">
+                    Support for a single or bulk upload. Strictly prohibit from
+                    uploading company data or other band files
+                  </p>
+                </Dragger>
+              </Form.Item>
+              <Form.Item
+                className="ce-form-label"
+                label="Would you like to provide a certificate of participation in form of NFT to attendees ?"
+                name="certificate of participation choice"
+                rules={[{ required: true }]}
+              >
+                <Radio.Group
+                  onChange={(e) => {
+                    setEvent({
+                      ...event,
+                      isCOP: e.target.value,
+                    });
+                  }}
+                  value={event.isCOP}
+                >
+                  <Radio value={true} className="ce-radio-choice">
+                    Yes
+                  </Radio>
+                  <Radio value={false} className="ce-radio-choice">
+                    No
+                  </Radio>
+                </Radio.Group>
+              </Form.Item>
+              {event.isCOP ? (
+                <Form.Item
+                  className="ce-form-label"
+                  label="Upload the NFT image"
+                  name="nftImage"
+                  rules={[{ required: true }]}
+                >
+                  <Dragger {...nftImageDaggerProps}>
+                    <p className="ant-upload-drag-icon">
+                      <InboxOutlined />
+                    </p>
+                    <p className="ant-upload-text">
+                      Click or drag file to this area to upload
+                    </p>
+                    <p className="ant-upload-hint">
+                      Support for a single or bulk upload. Strictly prohibit
+                      from uploading company data or other band files
+                    </p>
+                  </Dragger>
+                </Form.Item>
+              ) : null}
+              <Form.Item className="ce-submit-form-item">
+                <Button
+                  className="ce-submit-btn"
+                  type="primary"
+                  htmlType="submit"
+                  onClick={() => createEvent()}
+                >
+                  Create Event
+                </Button>
+              </Form.Item>
+            </Form>
+          </div>
+        </div>
+      )}
     </>
   );
 };

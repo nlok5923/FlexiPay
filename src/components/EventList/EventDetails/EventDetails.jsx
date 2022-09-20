@@ -16,12 +16,17 @@ import FlexiPayArtifact from "../../../Ethereum/FlexiPay.json";
 import GetContract from "../../../hooks/GetContract";
 import addresses from "../../../config";
 import ERC20ABi from "../../../Ethereum/ERC20ABI.json";
+import ProofOfAttendenceAbi from "../../../Ethereum/ProofOfAttendence.json"
+import { useMoralis, useMoralisFile } from "react-moralis";
 
 //! we can also include a feature to notify user to stop the stream once the event got over
 
 const { Step } = Steps;
 const EventDetails = () => {
+  const { authenticate, isAuthenticated, user } = useMoralis();
+  const { error, isUploading, moralisFile, saveFile } = useMoralisFile();
   let flexiPayContract = GetContract(addresses.FlexiPay, FlexiPayArtifact.abi);
+  let ProofOfAttendenceContract = GetContract(addresses.ProofOfAttendence, ProofOfAttendenceAbi.abi);
   let superFakeDAITokenContract = GetContract(
     addresses.SuperFakeDAIToken,
     ERC20ABi.abi
@@ -225,6 +230,40 @@ const EventDetails = () => {
     }
   };
 
+  const withDrawRsvpFee = async () => {
+    try {
+      setIsLoading(true);
+      let withDrawTxn = await withDrawRsvpFee(event_id);
+      await withDrawTxn.wait();
+      setIsLoading(false);
+      message.success("Withdraw RSVP successfully completed!");
+    } catch (err) {
+      message.success("Some error occured while withdraw!");
+      console.log(err);
+    }
+  }
+
+  const claimEventNFT = async () => {
+    try {
+      setIsLoading(true);
+      let nftMetaData = {
+        name: event[1],
+        image: `${process.env.REACT_APP_MORALIS_IPFS_URL}${event[2]}`,
+        description: event[3]
+      };
+      if(!isAuthenticated) {
+        authenticate();
+      }
+      let fileResponse = await saveFile("temp.json", { base64: btoa(JSON.stringify(nftMetaData))}, { saveIPFS: true })
+      console.log(fileResponse.ipfs());
+      let nftMintTxn = await ProofOfAttendenceContract.safeMint(userAddress, `${process.env.REACT_APP_MORALIS_IPFS_URL}${fileResponse._hash}`);
+      await nftMintTxn.wait();
+      setIsLoading(false);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   return (
     <>
     {event && !isLoading ? (
@@ -232,7 +271,7 @@ const EventDetails = () => {
         <h1 className="ed-heading">Event Details</h1>
         {/* <button onClick={() => createTables()}> Create tables </button> */}
         <img
-          src={`https://gateway.pinata.cloud/ipfs/${event[2]}`}
+          src={`${process.env.REACT_APP_MORALIS_IPFS_URL}${event[2]}`}
           alt={"Event Cover Img"}
           className="ed-img"
         />
@@ -382,18 +421,18 @@ const EventDetails = () => {
           <Alert message="The RSVP fees would be transferred to the MetaMask account you are currently signed in with." className="ed-alert" type="info" showIcon />
           <div
               className="ed-di-div"
-              onClick={() => {}}
+              onClick={() => withDrawRsvpFee()}
             >
               <span className="ed-di-text">Withdraw RSVP Fees</span>
             </div>
         </div>
         <div className="ed-wf-div">
-          <h1 className="ed-heading">Collect NFT</h1>
+          <h1 className="ed-heading">Claim your event Attendence NFT</h1>
           <div
               className="ed-di-div"
-              onClick={() => {}}
+              onClick={() => claimEventNFT()}
             >
-              <span className="ed-di-text">Collect NFT</span>
+              <span className="ed-di-text">Claim</span>
             </div>
         </div>
         </>:  null}

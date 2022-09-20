@@ -112,7 +112,7 @@ const EventList = () => {
               return (
                 <Card
                   key={index}
-                  cover={<img src={`https://gateway.pinata.cloud/ipfs/${item[2]}`} alt={item.name} className='el-cover-img' />}
+                  cover={<img src={`${process.env.REACT_APP_MORALIS_IPFS_URL}${item[2]}`} alt={item.name} className='el-cover-img' />}
                   className='el-card'
                   onClick={()=>navigate(`/events/${item[0]}`)}
                 >

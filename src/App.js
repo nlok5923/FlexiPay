@@ -12,6 +12,7 @@ import { chain, configureChains, createClient, WagmiConfig } from "wagmi";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
 import AboutVlad from './components/AboutVlad/AboutVlad';
+import { MoralisProvider } from "react-moralis";
 
 const { chains, provider } = configureChains(
   [chain.polygonMumbai, chain.ropsten, chain.goerli, chain.hardhat],
@@ -35,6 +36,7 @@ const wagmiClient = createClient({
 function App() {
   return (
     <div className='App'>
+      <MoralisProvider appId={process.env.REACT_APP_MORALIS_APP_ID} serverUrl={process.env.REACT_APP_MORALIS_SERVER_URL}>
       <WagmiConfig client={wagmiClient}>
         <RainbowKitProvider chains={chains}>
           <Router>
@@ -50,6 +52,7 @@ function App() {
           </Router>
         </RainbowKitProvider>
       </WagmiConfig>
+      </MoralisProvider>
     </div>
   );
 }
