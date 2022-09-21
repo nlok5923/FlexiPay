@@ -66,6 +66,30 @@ const EventList = () => {
   const [tableState, setTableState] = useState(null);
   const [events, setEvents] = useState(null);
 
+  // function sortObjectByKeys(o) {
+  //   return Object.keys(o).sort().reduce((r, k) => (r[k] = o[k], r), {});
+  // }
+
+  const alchemyToEventNode = (events) => {
+    let newEvents = {
+      columns: [],
+      rows: [],
+    }
+
+    for(var prop in events) {
+      let newEvent = [];
+      if(Object.prototype.hasOwnProperty.call(events, prop)) {
+        // let sortedEvent = sortObjectByKeys(events[prop]);
+        if(newEvents.columns.length === 0) {
+          newEvents.columns = Object.keys(events[prop]);
+        }
+        newEvent = Object.values(events[prop]);
+        newEvents.rows.push(newEvent);
+      }
+    }
+    return newEvents;
+  } 
+
   const initTableLand = async () => {
     try {
       const wallet = new Wallet(
@@ -82,10 +106,9 @@ const EventList = () => {
         chain: "polygon-mumbai",
       });
       const events = await tableland.read(`SELECT * FROM ${tableNames.EVENT_DETAILS}`);
-      setEvents(events);
-      console.log(" these are all events ", events);
-      // console.log(typeof events);
-      events.map(ev => console.log(" this is ev ", ev));
+      const newEvents = alchemyToEventNode(events);
+      setEvents(newEvents);
+      console.log(" these are all new events ", newEvents);
       setTableState(tableland);
     } catch (err) {
       console.log(err);

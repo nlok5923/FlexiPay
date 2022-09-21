@@ -49,8 +49,27 @@ const EventDetails = () => {
   const [currentUsername, setCurrentUsername] = useState(null);
   const [superFluidSignerState, setSuperFluidSignerState] = useState(null);
   const [superFluidInstance, setSuperfluidInstance] = useState(null);
-  const [isUserRegisteredForEvent, setIsUserRegisteredForEvent] =
-    useState(false);
+  const [isUserRegisteredForEvent, setIsUserRegisteredForEvent] = useState(false);
+
+  const alchemyToEventNode = (events) => {
+    let newEvents = {
+      columns: [],
+      rows: [],
+    }
+
+    for(var prop in events) {
+      let newEvent = [];
+      if(Object.prototype.hasOwnProperty.call(events, prop)) {
+        // let sortedEvent = sortObjectByKeys(events[prop]);
+        if(newEvents.columns.length === 0) {
+          newEvents.columns = Object.keys(events[prop]);
+        }
+        newEvent = Object.values(events[prop]);
+        newEvents.rows.push(newEvent);
+      }
+    }
+    return newEvents;
+  } 
 
   const initTableLand = async () => {
     try {
@@ -315,9 +334,9 @@ const EventDetails = () => {
             <div className="ed-card-text">{event[3]}</div>
             <div className="ed-card-text">Event ID: {event[0]}</div>
             <div className="ed-card-text">Start Date: {event[4]}</div>
-            <div className="ed-card-text">End Date: {event[5]}</div>
+            <div className="ed-card-text">End Date: {event[2]}</div>
             <div className="ed-card-text">Start Time: {event[6]}</div>
-            <div className="ed-card-text">End Time: {event[7]}</div>
+            <div className="ed-card-text">End Time: {event[3]}</div>
             <div className="ed-card-text">Discord VC Name: {event[9]}</div>
             <div className="ed-card-text">
               Org MetaMask Address: {event[10]}
@@ -327,7 +346,47 @@ const EventDetails = () => {
           </div>
         </div>
 
-        {!isUserRegisteredForEvent && !isEventOver(event[5], event[7]) ? (
+        {/* 
+         Order of data in Alchemy Row
+          0 - event_id
+          1 - event_name
+          2 - event_poster
+          3 - about_event
+          4 - start_date
+          5 - end_date
+          6 - start_time
+          7 - end_time
+          8 - event_link
+          9 - discord_vc
+          10 - org_meta_addr
+          11 - org_discord_username
+          12 - event_rate
+          13 - event_rsvp_fee
+          14 - is_nft
+          15 - nft_hash
+        */}
+
+        {/*
+          Order of data in Event Row
+          0 : "about_event"
+          1 : "discord_vc"
+          2 : "end_date"
+          3 : "end_time"
+          4 : "event_id"
+          5 : "event_link"
+          6 : "event_name"
+          7 : "event_poster"
+          8 : "event_rate"
+          9 : "event_rsvp_fee"
+          10 : "is_nft"
+          11 : "nft_hash"
+          12 : "org_discord_username"
+          13 : "org_meta_addr"
+          14 : "start_date"
+          15 : "start_time"
+        */}
+
+        {!isUserRegisteredForEvent && !isEventOver(event[2], event[3]) ? (
           <div className="ed-join-event-div">
             <h1 className="ed-heading">Join Event</h1>
             <Alert message="Your current signed in wallet account would be used to register for the event" className="ed-alert" type="info" showIcon />
@@ -402,7 +461,7 @@ const EventDetails = () => {
             />
             <div
               className="ed-di-div"
-              onClick={() => window.open(`${event[8]}`)}
+              onClick={() => window.open(`${event[5]}`, "_blank")}
             >
               <img
                 src="/assets/images/discord-logo.png"
@@ -450,7 +509,7 @@ const EventDetails = () => {
           </div>
         ) : null}
 
-        {isUserRegisteredForEvent && isEventOver(event[5], event[7]) ? <>
+        {isUserRegisteredForEvent && isEventOver(event[2], event[3]) ? <>
         <div className="ed-wf-div">
           <h1 className="ed-heading">Withdraw RSVP Fees</h1>
           <Alert message="The RSVP fees would be transferred to the MetaMask account you are currently signed in with." className="ed-alert" type="info" showIcon />
