@@ -37,7 +37,7 @@ contract FlexiPay {
 
     function withDrawRsvpFee(string memory _eventId) external {
         require(eventLockedFee[_eventId] >= eventLockingFee[_eventId], "No fee remains to claim");
-        eventLockedFee[_eventId] -= eventLockingFee[_eventId];
-        fDaiXContract.transfer(msg.sender, eventLockingFee[_eventId] * 1 ether);
+        eventLockedFee[_eventId] = eventLockedFee[_eventId] - eventLockingFee[_eventId];
+        fDaiXContract.transfer(msg.sender, eventLockingFee[_eventId] * 1000000000000000000);
     }
 }

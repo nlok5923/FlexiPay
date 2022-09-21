@@ -3,7 +3,7 @@ import './AboutVlad.css'
 
 const AboutVlad = () => {
 
-  const discordInvite = "https://discord.com/oauth2/authorize?client_id=1013031057005740072&permissions=0&scope=bot%20applications.commands"
+  const discordInvite = "https://discord.com/api/oauth2/authorize?client_id=1013031057005740072&permissions=8&scope=bot%20applications.commands "
 
   return (
     <div className='av-div'>
@@ -30,8 +30,8 @@ const AboutVlad = () => {
               <code className='code-snippet'>{'!init eventInfo {eventId} {vc-name}'}</code>
           </li>
           <li>Replace <code className='code-snippet'>{'{eventId}'}</code> with the Event Id of your event and <code className='code-snippet'>{'{vc-name}'}</code> with the Voice Channel Name on which the event would be hosted.</li>
-          <li>Before the event starts make sure to add the bot to the Voice channel by entering the command <code className='code-snippet'>/join</code> on your #general channel.</li>
-          <li>After the event ends, you may remove the bot from the Voice channel by entering the command <code className='code-snippet'>/leave</code> on your #general channel.</li>
+          <li>Before the event starts make sure to ping bot to start monitoring voice channel using the command <code className='code-snippet'>/start-monitoring</code> on your #general channel.</li>
+          <li>After the event ends you can stop bot from monitoring the voice channel using the command <code className='code-snippet'>/stop-monitoring</code> on your #general channel.</li>
         </ul>
       </div>
       <div className='av-invite-div'>

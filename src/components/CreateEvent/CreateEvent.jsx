@@ -1,6 +1,6 @@
 import { React, useState, useEffect } from "react";
 import "./CreateEvent.css";
-import { Wallet, providers, Contract } from "ethers";
+import { Wallet, providers, Contract, ethers } from "ethers";
 import { connect } from "@tableland/sdk";
 import {
   Form,
@@ -23,6 +23,7 @@ import GetContract from "../../hooks/GetContract";
 import Loader from "../../shared/Loader/Loader";
 import tableNames from "../../databaseConfig";
 import { useMoralis, useMoralisFile } from "react-moralis";
+import getDAIToUsdPrice from "../../services/DaiToUsdFeed";
 
 // Event details table: _80001_1963
 const { Dragger } = Upload;
@@ -42,13 +43,13 @@ const CreateEvent = () => {
     discordVcName: "General",
     orgMetaMaskAddress: "0xD649267Da6C1554CE62c8790Ff6C465aF108a167",
     orgDiscordUsername: "Nitanshu Lokhande",
-    eventRate: "1",
-    eventRsvpFee: "10",
+    eventRate: 1,
+    eventRsvpFee: 10,
     isCOP: false,
     nftImage: null,
   });
 
-  let flexiPayContract = GetContract(addresses.FlexiPay, FlexiPayArtifact.abi);
+  // let flexiPayContract = GetContract(addresses.FlexiPay, FlexiPayArtifact.abi);
   const { authenticate, isAuthenticated, user } = useMoralis();
   const { error, isUploading, moralisFile, saveFile } = useMoralisFile();
 
@@ -227,10 +228,10 @@ const CreateEvent = () => {
       const eventPosterHash = await uploadEventPoster(eventPoster);
       console.log(" this is event poster hash ", eventPosterHash);
       console.log(" this is event NFT file ", eventNFTFile);
-      const eventNFTFileHash = await uploadEventPoster(eventNFTFile);
+      // const eventNFTFileHash = await uploadEventPoster(eventNFTFile);
       // console.log("this is event data ", event);
-      console.log(" this is event nft file hash ", eventNFTFileHash);
-
+      // console.log(" this is event nft file hash ", eventNFTFileHash);
+      const eventNFTFileHash = "temp_hash";
       const INSERT_QUERY = `INSERT INTO ${tableNames.EVENT_DETAILS} 
       (event_id, 
         event_name, 
@@ -273,6 +274,8 @@ const CreateEvent = () => {
       let eventInsertRes = await tableState.write(EVENT_INSERT_QUERY);
       console.log("Added event to event table", writeRes);
       console.log("Added event to event table", eventInsertRes);
+      let ethProvider = new ethers.providers.Web3Provider(window.ethereum);
+      let flexiPayContract = new ethers.Contract(addresses.FlexiPay, FlexiPayArtifact.abi, ethProvider.getSigner(0));
       let addEventTxn = await flexiPayContract.addEvent(
         eventId.trim(),
         eventRsvpFee,
@@ -302,6 +305,7 @@ const CreateEvent = () => {
         <Loader />
       ) : (
         <div className="ce-par-div">
+          {/* <button onClick={() => getDAIToUsdPrice()}> Get price </button> */}
           <div className="ce-div">
             {/* // admin side operation */}
             {/* <button onClick={() => readTable()}>Read</button> */}
@@ -466,7 +470,7 @@ const CreateEvent = () => {
                   </p>
                 </Dragger>
               </Form.Item>
-              <Form.Item
+              {/* <Form.Item
                 className="ce-form-label"
                 label="Would you like to provide a certificate of participation in form of NFT to attendees ?"
                 name="certificate of participation choice"
@@ -488,8 +492,8 @@ const CreateEvent = () => {
                     No
                   </Radio>
                 </Radio.Group>
-              </Form.Item>
-              {event.isCOP ? (
+              </Form.Item> */}
+              {/* {event.isCOP ? (
                 <Form.Item
                   className="ce-form-label"
                   label="Upload the NFT image"
@@ -509,7 +513,7 @@ const CreateEvent = () => {
                     </p>
                   </Dragger>
                 </Form.Item>
-              ) : null}
+              ) : null} */}
               <Form.Item className="ce-submit-form-item">
                 <Button
                   className="ce-submit-btn"
