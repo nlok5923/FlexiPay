@@ -29,7 +29,7 @@ Both, the web application and bot share a common database. Discord Bot guards th
 - Tableland
 - Superfluid
 
-## How does it works?
+## How does it work?
 
 ### Web Application:
 
