@@ -1,0 +1,37 @@
+{
+  "name": "flexi-pay-janitor",
+  "version": "1.0.0",
+  "description": "Janitor for discord voice events",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/index.js",
+    "run": "node src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nlok5923/Flexy-Pay-Janitor.git"
+  },
+  "author": "nlok5923",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nlok5923/Flexy-Pay-Janitor/issues"
+  },
+  "homepage": "https://github.com/nlok5923/Flexy-Pay-Janitor#readme",
+  "dependencies": {
+    "@discordjs/rest": "^1.1.0",
+    "@discordjs/voice": "^0.11.0",
+    "@superfluid-finance/sdk-core": "^0.5.6",
+    "@tableland/sdk": "^3.1.1",
+    "buffer": "^6.0.3",
+    "chalk": "^5.0.1",
+    "discord-api-types": "^0.37.8",
+    "discord.js": "^14.3.0",
+    "dotenv": "^16.0.2",
+    "ethers": "^5.7.0",
+    "node-fetch": "^2.6.1"
+  },
+  "engines": {
+    "node": "16.17.0"
+  }
+}
