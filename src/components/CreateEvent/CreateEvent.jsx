@@ -23,7 +23,8 @@ import GetContract from "../../hooks/GetContract";
 import Loader from "../../shared/Loader/Loader";
 import tableNames from "../../databaseConfig";
 import { useMoralis, useMoralisFile } from "react-moralis";
-import getDAIToUsdPrice from "../../services/DaiToUsdFeed";
+// import getDAIToUsdPrice from "../../services/DaiToUsdFeed";
+import getDaiToUsdPrice from "../../services/DaiToUsdPrice";
 
 // Event details table: _80001_1963
 const { Dragger } = Upload;
@@ -308,7 +309,7 @@ const CreateEvent = () => {
           {/* <button onClick={() => getDAIToUsdPrice()}> Get price </button> */}
           <div className="ce-div">
             {/* // admin side operation */}
-            {/* <button onClick={() => readTable()}>Read</button> */}
+            <button onClick={() => getDaiToUsdPrice()}>Read</button>
             {/* <button className='ce-btn' onClick={() => createTable()}>Create Table</button> */}
             {/* <button onClick={() => deleteTableEntries()}> Clear Everything </button> */}
             <h1 className="ce-heading">Create Event</h1>

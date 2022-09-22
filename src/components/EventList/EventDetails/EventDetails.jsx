@@ -18,8 +18,7 @@ import addresses from "../../../config";
 import ERC20ABi from "../../../Ethereum/ERC20ABI.json";
 import ProofOfAttendenceAbi from "../../../Ethereum/ProofOfAttendence.json";
 import { useMoralis, useMoralisFile } from "react-moralis";
-import getDAIToUsdPrice from "../../../services/DaiToUsdFeed";
-import getEthToUsdPrice from "../../../services/EthToUsdFeed";
+import getDAIToUsdPrice from "../../../services/DaiToUsdPrice";
 
 //! we can also include a feature to notify user to stop the stream once the event got over
 
@@ -433,10 +432,10 @@ const EventDetails = () => {
                 Org MetaMask Address: {event[10]}
               </div>
               <div className="ed-card-text">
-                Event Rate: {event[12] * DaiToUsdPrice}$ / hr
+                Event Rate: {event[12] * DaiToUsdPrice} Dai / hr
               </div>
               <div className="ed-card-text">
-                Event RSVP Fee: {event[13] * DaiToUsdPrice}$ 
+                Event RSVP Fee: {event[13] * DaiToUsdPrice} Dai 
               </div>
             </div>
           </div>
