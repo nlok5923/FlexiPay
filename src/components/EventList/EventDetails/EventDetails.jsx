@@ -1,14 +1,11 @@
 import React, { useState, createRef } from "react";
 import "./EventDetails.css";
 import { Form, Input, Button, Steps, Alert, message } from "antd";
-import Slider from "react-slick";
-import { Link, useSearchParams } from "react-router-dom";
 import { Wallet, providers } from "ethers";
 import { connect } from "@tableland/sdk";
 import { useEffect } from "react";
 import Loader from "../../../shared/Loader/Loader";
 import GetAccount from "../../../hooks/GetAccount";
-import { ConstantFlowAgreementV1 } from "@superfluid-finance/sdk-core";
 import { Framework } from "@superfluid-finance/sdk-core";
 import { ethers } from "ethers";
 import tableNames from "../../../databaseConfig";
@@ -28,7 +25,6 @@ const EventDetails = () => {
   const { error, isUploading, moralisFile, saveFile } = useMoralisFile();
   let ethProvider = new ethers.providers.Web3Provider(window.ethereum);
   let flexiPayContract = new ethers.Contract(addresses.FlexiPay, FlexiPayArtifact.abi, ethProvider.getSigner(0));
-  // let flexiPayContract = GetContract(addresses.FlexiPay, FlexiPayArtifact.abi);
   let ProofOfAttendenceContract = GetContract(
     addresses.ProofOfAttendence,
     ProofOfAttendenceAbi.abi
@@ -53,7 +49,6 @@ const EventDetails = () => {
   const [isStreamEnded, setIsStreamEnded] = useState(false);
   const [tableLandState, setTableLandState] = useState(null);
   const [DaiToUsdPrice, setDaiToUsdPrice] = useState(1);
-  const [ethToUsdPrice, setEthToUsdPrice] = useState(1);
   const [currentUsername, setCurrentUsername] = useState(null);
   const [superFluidSignerState, setSuperFluidSignerState] = useState(null);
   const [superFluidInstance, setSuperfluidInstance] = useState(null);
@@ -166,15 +161,6 @@ const EventDetails = () => {
           const superFluidSigner = superFluidProvider.getSigner();
           setSuperFluidSignerState(superFluidSigner);
 
-          console.log(" this is called in init tableland");
-          console.log(
-            addresses.SuperFakeDAIToken +
-              " " +
-              userAddress +
-              " " +
-              event.rows[0][10]
-          );
-
           let checkStream = await sf.cfaV1.getFlow({
             superToken: addresses.SuperFakeDAIToken,
             sender: userAddress,
@@ -189,7 +175,6 @@ const EventDetails = () => {
             setIsStreamEnded(true);
             setIsStreamStarted(false);
           }
-
           console.log(" checking flow rate ", checkStream);
         }
       }

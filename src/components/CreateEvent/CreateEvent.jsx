@@ -15,16 +15,16 @@ import {
   Radio,
 } from "antd";
 import { Buffer } from "buffer";
-import Axios from "axios";
+// import Axios from "axios";
 import { InboxOutlined } from "@ant-design/icons";
 import addresses from "../../config";
 import FlexiPayArtifact from "../../Ethereum/FlexiPay.json";
-import GetContract from "../../hooks/GetContract";
+// import GetContract from "../../hooks/GetContract";
 import Loader from "../../shared/Loader/Loader";
 import tableNames from "../../databaseConfig";
 import { useMoralis, useMoralisFile } from "react-moralis";
 // import getDAIToUsdPrice from "../../services/DaiToUsdFeed";
-import getDaiToUsdPrice from "../../services/DaiToUsdPrice";
+// import getDaiToUsdPrice from "../../services/DaiToUsdPrice";
 
 // Event details table: _80001_1963
 const { Dragger } = Upload;
@@ -86,37 +86,37 @@ const CreateEvent = () => {
     },
   };
 
-  const nftImageDaggerProps = {
-    name: "nftImageFile",
-    multiple: false,
-    listType: "picture",
-    accept: ".png,.jpg,.jpeg",
-    beforeUpload(file) {
-      console.log(file);
-      setEventNFTFile(file);
-      return false;
-    },
-    iconRender() {
-      return <Spin></Spin>;
-    },
-    onChange(info) {
-      const { status } = info.file;
+  // const nftImageDaggerProps = {
+  //   name: "nftImageFile",
+  //   multiple: false,
+  //   listType: "picture",
+  //   accept: ".png,.jpg,.jpeg",
+  //   beforeUpload(file) {
+  //     console.log(file);
+  //     setEventNFTFile(file);
+  //     return false;
+  //   },
+  //   iconRender() {
+  //     return <Spin></Spin>;
+  //   },
+  //   onChange(info) {
+  //     const { status } = info.file;
 
-      if (status !== "uploading") {
-        console.log(info.file, info.fileList);
-      }
+  //     if (status !== "uploading") {
+  //       console.log(info.file, info.fileList);
+  //     }
 
-      if (status === "done") {
-        message.success(`${info.file.name} file uploaded successfully.`);
-      } else if (status === "error") {
-        message.error(`${info.file.name} file upload failed.`);
-      }
-    },
+  //     if (status === "done") {
+  //       message.success(`${info.file.name} file uploaded successfully.`);
+  //     } else if (status === "error") {
+  //       message.error(`${info.file.name} file upload failed.`);
+  //     }
+  //   },
 
-    onDrop(e) {
-      console.log("Dropped files", e.dataTransfer.files);
-    },
-  };
+  //   onDrop(e) {
+  //     console.log("Dropped files", e.dataTransfer.files);
+  //   },
+  // };
 
   const uploadEventPoster = async (eventFile) => {
     if (!isAuthenticated) {
@@ -152,17 +152,17 @@ const CreateEvent = () => {
     console.log(event);
   };
 
-  const createTable = async () => {
-    try {
-      const { name } = await tableState.create(
-        `event_id text, event_name text, event_poster text, about_event text, start_date text, end_date text, start_time text, end_time text, event_link text, discord_vc text, org_meta_addr text, org_discord_username text, event_rate int, event_rsvp_fee int, is_nft int, nft_hash text, primary key (event_id)`,
-        `event_details`
-      );
-      console.log("event_details table name ", name);
-    } catch (err) {
-      console.log(err.message);
-    }
-  };
+  // const createTable = async () => {
+  //   try {
+  //     const { name } = await tableState.create(
+  //       `event_id text, event_name text, event_poster text, about_event text, start_date text, end_date text, start_time text, end_time text, event_link text, discord_vc text, org_meta_addr text, org_discord_username text, event_rate int, event_rsvp_fee int, is_nft int, nft_hash text, primary key (event_id)`,
+  //       `event_details`
+  //     );
+  //     console.log("event_details table name ", name);
+  //   } catch (err) {
+  //     console.log(err.message);
+  //   }
+  // };
 
   const initTableLand = async () => {
     try {
@@ -190,24 +190,24 @@ const CreateEvent = () => {
     initTableLand();
   }, []);
 
-  const deleteTableEntries = async () => {
-    try {
-      const DELETE_EVENT_TABLE_ENTRIES = `DELETE FROM ${tableNames.EVENT_DETAILS};`;
-      const DELETE_EVENT_ORG_ADDRESS_TABLE = `DELETE FROM ${tableNames.EVENT_ORG_ADDRESS};`;
-      const DELETE_EVENT_USER_TABLE_ENTRY = `DELETE FROM ${tableNames.EVENT_USER};`;
-      const DELETE_USER_META_ADDRESS_TABLE_ENTRY = `DELETE FROM ${tableNames.USER_META_ADDRESS};`;
-      let deleteResp = await tableState.write(DELETE_EVENT_TABLE_ENTRIES);
-      console.log(" the create event table deleted ", deleteResp);
-      deleteResp = await tableState.write(DELETE_EVENT_ORG_ADDRESS_TABLE);
-      console.log(" delete event org adddress table ", deleteResp);
-      deleteResp = await tableState.write(DELETE_EVENT_USER_TABLE_ENTRY);
-      console.log(" delete event user table ", deleteResp);
-      deleteResp = await tableState.write(DELETE_USER_META_ADDRESS_TABLE_ENTRY);
-      console.log(" user meta delete ", deleteResp);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  // const deleteTableEntries = async () => {
+  //   try {
+  //     const DELETE_EVENT_TABLE_ENTRIES = `DELETE FROM ${tableNames.EVENT_DETAILS};`;
+  //     const DELETE_EVENT_ORG_ADDRESS_TABLE = `DELETE FROM ${tableNames.EVENT_ORG_ADDRESS};`;
+  //     const DELETE_EVENT_USER_TABLE_ENTRY = `DELETE FROM ${tableNames.EVENT_USER};`;
+  //     const DELETE_USER_META_ADDRESS_TABLE_ENTRY = `DELETE FROM ${tableNames.USER_META_ADDRESS};`;
+  //     let deleteResp = await tableState.write(DELETE_EVENT_TABLE_ENTRIES);
+  //     console.log(" the create event table deleted ", deleteResp);
+  //     deleteResp = await tableState.write(DELETE_EVENT_ORG_ADDRESS_TABLE);
+  //     console.log(" delete event org adddress table ", deleteResp);
+  //     deleteResp = await tableState.write(DELETE_EVENT_USER_TABLE_ENTRY);
+  //     console.log(" delete event user table ", deleteResp);
+  //     deleteResp = await tableState.write(DELETE_USER_META_ADDRESS_TABLE_ENTRY);
+  //     console.log(" user meta delete ", deleteResp);
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
 
   const createEvent = async () => {
     try {
@@ -227,11 +227,6 @@ const CreateEvent = () => {
         isCOP,
       } = event;
       const eventPosterHash = await uploadEventPoster(eventPoster);
-      console.log(" this is event poster hash ", eventPosterHash);
-      console.log(" this is event NFT file ", eventNFTFile);
-      // const eventNFTFileHash = await uploadEventPoster(eventNFTFile);
-      // console.log("this is event data ", event);
-      // console.log(" this is event nft file hash ", eventNFTFileHash);
       const eventNFTFileHash = "temp_hash";
       const INSERT_QUERY = `INSERT INTO ${tableNames.EVENT_DETAILS} 
       (event_id, 
@@ -291,14 +286,14 @@ const CreateEvent = () => {
     }
   };
 
-  const readTable = async () => {
-    try {
-      let readData = await tableState.read(`SELECT * FROM _80001_1803;`);
-      console.log(" this is readData of event ", readData);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  // const readTable = async () => {
+  //   try {
+  //     let readData = await tableState.read(`SELECT * FROM _80001_1803;`);
+  //     console.log(" this is readData of event ", readData);
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
 
   return (
     <>
@@ -306,12 +301,8 @@ const CreateEvent = () => {
         <Loader />
       ) : (
         <div className="ce-par-div">
-          {/* <button onClick={() => getDAIToUsdPrice()}> Get price </button> */}
           <div className="ce-div">
-            {/* // admin side operation */}
-            <button onClick={() => getDaiToUsdPrice()}>Read</button>
-            {/* <button className='ce-btn' onClick={() => createTable()}>Create Table</button> */}
-            {/* <button onClick={() => deleteTableEntries()}> Clear Everything </button> */}
+            {/* <button onClick={() => getDaiToUsdPrice()}>Read</button> */}
             <h1 className="ce-heading">Create Event</h1>
             <Form className="ce-form" form={form} layout={"vertical"}>
               <Form.Item
