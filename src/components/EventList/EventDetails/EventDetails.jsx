@@ -227,10 +227,10 @@ const EventDetails = () => {
         },
         env: 'staging'
       })
-      console.log(apiResp.status);
       setIsUserSub(true);
       message.success("Subscribed to Event Notifications");
     } catch (e) {
+      message.error("Some error occured while subscribing");
       console.error(e);
     }
   }
@@ -259,6 +259,7 @@ const EventDetails = () => {
       setIsUserSub(false);
       message.success("Unsubscribed from Event Notifications");
     } catch (e) {
+      message.error("Some error occured while unsubscribing");
       console.error(e);
     }
   }
