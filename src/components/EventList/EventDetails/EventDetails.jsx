@@ -16,7 +16,6 @@ import ERC20ABi from "../../../Ethereum/ERC20ABI.json";
 import ProofOfAttendenceAbi from "../../../Ethereum/ProofOfAttendence.json";
 import { useMoralis, useMoralisFile } from "react-moralis";
 import getDAIToUsdPrice from "../../../services/DaiToUsdPrice";
-// import getEthToUsdPrice from "../../../services/EthToUsdFeed";
 import * as EpnsAPI from "@epnsproject/sdk-restapi";
 
 //! we can also include a feature to notify user to stop the stream once the event got over
@@ -58,7 +57,7 @@ const EventDetails = () => {
     useState(false);
   const [isUserWithDrawRsvp, setIsUserWithdrawnRsvp] = useState(false);
   const DAI_FLOW_RATE = 385802469135;
-  
+  const [isUserSub, setIsUserSub] = useState(null);
   
 
   const reArrangeEventsData = (eventData) => {
@@ -207,16 +206,85 @@ const EventDetails = () => {
   useEffect(() => {
     window.Buffer = Buffer;
     initTableLand();
-    fetchUserSubs();
+    isUserSubscribed();
   }, []);
 
+  const isUserSubscribed = async () => {
+    const subs = await fetchUserSubs();
+    const fpChannel = process.env.REACT_APP_EPNS_CHANNEL;
+    for(let i=0;i<subs.length;i++) {
+      if(subs[i].channel === fpChannel) {
+        console.log("user is subscribed");
+        setIsUserSub(true);
+        return ;
+      }
+    }
+    setIsUserSub(false);
+  }
+
+  const subscribeToChannel = async () => {
+    const epnsWallet = new Wallet(`0x${process.env.REACT_APP_EPNS_PK}`);
+    const provider = new providers.AlchemyProvider(
+      "maticmum",
+      process.env.REACT_APP_ALCHEMY_API_KEY
+    );
+    const epnsSigner = epnsWallet.connect(provider);
+    try {
+      const apiResp = await EpnsAPI.channels.subscribe({
+        signer: epnsSigner,
+        channelAddress: `eip155:42:${process.env.REACT_APP_EPNS_CHANNEL}`, // channel address in CAIP
+        userAddress: `eip155:42:${userAddress}`, // user address in CAIP
+        onSuccess: () => {
+         console.log('opt in success');
+        },
+        onError: () => {
+          console.error('opt in error');
+        },
+        env: 'staging'
+      })
+      setIsUserSub(true);
+      message.success("Subscribed to Event Notifications");
+    } catch (e) {
+      message.error("Some error occured while subscribing");
+      console.error(e);
+    }
+  }
+
+  const unsubscribeFromChannel = async () => {
+    const epnsWallet = new Wallet(`0x${process.env.REACT_APP_EPNS_PK}`);
+    const provider = new providers.AlchemyProvider(
+      "maticmum",
+      process.env.REACT_APP_ALCHEMY_API_KEY
+    );
+    const epnsSigner = epnsWallet.connect(provider);
+    try {
+      const apiResp = await EpnsAPI.channels.unsubscribe({
+        signer: epnsSigner,
+        channelAddress: `eip155:42:${process.env.REACT_APP_EPNS_CHANNEL}`, // channel address in CAIP
+        userAddress: `eip155:42:${userAddress}`, // user address in CAIP
+        onSuccess: () => {
+         console.log('opt out success');
+        },
+        onError: () => {
+          console.error('opt out error');
+        },
+        env: 'staging'
+      })
+      console.log(apiResp.status);
+      setIsUserSub(false);
+      message.success("Unsubscribed from Event Notifications");
+    } catch (e) {
+      message.error("Some error occured while unsubscribing");
+      console.error(e);
+    }
+  }
+
   const fetchUserSubs = async () => {
-    const userAddress = GetAccount();
     const subscriptions = await EpnsAPI.user.getSubscriptions({
       user: `eip155:42:${userAddress}`, // user address in CAIP
       env: 'staging'
     });
-    console.log(subscriptions);
+    return subscriptions;
   }
 
   const isUserExist = async (username) => {
@@ -518,7 +586,7 @@ const EventDetails = () => {
             </div>
           ) : null}
 
-          {isUserRegisteredForEvent ? (
+          {/* {isUserRegisteredForEvent ? ( */}
             <div className="ed-after-joining-div">
               <Alert
                 message="You are registered for the Event !"
@@ -543,8 +611,53 @@ const EventDetails = () => {
                 />
                 <span className="ed-di-text">Discord Invite</span>
               </div>
+              {
+                (isUserSub === null) ?
+                <Loader /> 
+                :
+                (!isUserSub) ?
+                <div>
+                  <Alert
+                    message="Subscribe to our EPNS Channel if you want to be notified when the event is about to start !"
+                    type="info"
+                    showIcon
+                    className="ed-alert"
+                  />
+                  <div
+                    className="ed-subs-div"
+                    onClick={subscribeToChannel}
+                  >
+                    <img
+                      src="/assets/images/epns-logo.jpg"
+                      alt="epns-logo.jpg"
+                      className="ed-epns-img"
+                    />
+                    <span className="ed-di-text">Subscribe to Notifications</span>
+                  </div>
+                </div>
+                :
+                <div>
+                  <Alert
+                    message="If you unsubscribe from receiving Event notifications, you will not be receive a reminder notification for the event !"
+                    type="warning"
+                    showIcon
+                    className="ed-alert"
+                  />
+                  <div
+                    className="ed-unsubs-div"
+                    onClick={unsubscribeFromChannel}
+                  >
+                    <img
+                      src="/assets/images/epns-logo.jpg"
+                      alt="epns-logo.jpg"
+                      className="ed-epns-img"
+                    />
+                    <span className="ed-di-text">Unsubscribe to Notifications</span>
+                  </div>
+                </div>
+              }
             </div>
-          ) : null}
+          {/* ) : null} */}
 
           {isUserRegisteredForEvent && !isStreamStarted ? (
             <div className="ed-stream-div">
