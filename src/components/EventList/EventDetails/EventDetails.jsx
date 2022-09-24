@@ -54,6 +54,7 @@ const EventDetails = () => {
   const [superFluidInstance, setSuperfluidInstance] = useState(null);
   const [isUserRegisteredForEvent, setIsUserRegisteredForEvent] =
     useState(false);
+  const [isUserWithDrawRsvp, setIsUserWithdrawnRsvp] = useState(false);
   const DAI_FLOW_RATE = 385802469135;
 
   const reArrangeEventsData = (eventData) => {
@@ -178,12 +179,26 @@ const EventDetails = () => {
           console.log(" checking flow rate ", checkStream);
         }
       }
+
+      let isUserWithDrawRsvp = await checkUserWithdrawnRsvpFee();
+      setIsUserWithdrawnRsvp(isUserWithDrawRsvp);
       setIsLoading(false);
     } catch (err) {
       message.warning("Some error occured during initialization");
       console.log(err);
     }
   };
+
+  const checkUserWithdrawnRsvpFee = async () => {
+    try {
+      let isUserWithDrawnRsvp = await flexiPayContract.isRsvpFeeWithDrawn(
+        event_id
+      );
+      return isUserWithDrawnRsvp;
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
   useEffect(() => {
     window.Buffer = Buffer;
@@ -553,7 +568,7 @@ const EventDetails = () => {
             </div>
           ) : null}
           {/* && isEventOver(event[5], event[7]) ? */}
-          {isUserRegisteredForEvent ?  (
+          {isUserRegisteredForEvent && !isUserWithDrawRsvp ?  (
             <>
               <div className="ed-wf-div">
                 <h1 className="ed-heading">Withdraw RSVP Fees</h1>
