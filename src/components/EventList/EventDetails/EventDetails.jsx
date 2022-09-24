@@ -608,7 +608,7 @@ const EventDetails = () => {
                     className="ed-alert"
                   />
                   <div
-                    className="ed-di-div"
+                    className="ed-subs-div"
                     onClick={subscribeToChannel}
                   >
                     <img
@@ -622,13 +622,13 @@ const EventDetails = () => {
                 :
                 <div>
                   <Alert
-                    message="If you want to unsubsribe from receiving Event notifications, please click the button below !"
-                    type="info"
+                    message="If you unsubscribe from receiving Event notifications, you will not be receive a reminder notification for the event !"
+                    type="warning"
                     showIcon
                     className="ed-alert"
                   />
                   <div
-                    className="ed-di-div"
+                    className="ed-unsubs-div"
                     onClick={unsubscribeFromChannel}
                   >
                     <img
