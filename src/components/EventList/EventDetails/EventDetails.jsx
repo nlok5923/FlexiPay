@@ -15,8 +15,8 @@ import addresses from "../../../config";
 import ERC20ABi from "../../../Ethereum/ERC20ABI.json";
 import ProofOfAttendenceAbi from "../../../Ethereum/ProofOfAttendence.json";
 import { useMoralis, useMoralisFile } from "react-moralis";
-import getDAIToUsdPrice from "../../../services/DaiToUsdFeed";
-import getEthToUsdPrice from "../../../services/EthToUsdFeed";
+import getDAIToUsdPrice from "../../../services/DaiToUsdPrice";
+// import getEthToUsdPrice from "../../../services/EthToUsdFeed";
 import * as EpnsAPI from "@epnsproject/sdk-restapi";
 
 //! we can also include a feature to notify user to stop the stream once the event got over
