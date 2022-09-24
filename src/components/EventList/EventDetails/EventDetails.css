@@ -65,7 +65,7 @@
     font-size: 0.7rem;
 }
 .ed-after-joining-div {
-    margin: 5vh auto;
+    margin: 5vh 10%;
 }
 .ed-alert {
     margin-top: 1vh !important;
@@ -91,9 +91,41 @@
 .ed-di-div:hover {
     background-color: #0055ff !important;
 }
+.ed-subs-div {
+    border-radius: 0.5vw !important;
+    background-color: #0a7525 !important;
+    border-color: #85a7ec !important;
+    padding: 2vh 2vw;
+    cursor: pointer;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.ed-subs-div:hover {
+    background-color: #077c1b !important;
+}
+.ed-unsubs-div {
+    border-radius: 0.5vw !important;
+    background-color: #df281b !important;
+    padding: 2vh 2vw;
+    cursor: pointer;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.ed-unsubs-div:hover {
+    background-color: rgb(160, 17, 17) !important;
+}
 .ed-discord-img {
     width: 5%;
     margin-right: 2%;
+}
+.ed-epns-img {
+    width: 5%;
+    margin-right: 2%;
+    border-radius: 100%;
 }
 .ed-di-text {
     font-family: 'ManropeMedium';
