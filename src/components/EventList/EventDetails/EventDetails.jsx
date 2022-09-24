@@ -15,7 +15,9 @@ import addresses from "../../../config";
 import ERC20ABi from "../../../Ethereum/ERC20ABI.json";
 import ProofOfAttendenceAbi from "../../../Ethereum/ProofOfAttendence.json";
 import { useMoralis, useMoralisFile } from "react-moralis";
-import getDAIToUsdPrice from "../../../services/DaiToUsdPrice";
+import getDAIToUsdPrice from "../../../services/DaiToUsdFeed";
+import getEthToUsdPrice from "../../../services/EthToUsdFeed";
+import * as EpnsAPI from "@epnsproject/sdk-restapi";
 
 //! we can also include a feature to notify user to stop the stream once the event got over
 
@@ -56,6 +58,8 @@ const EventDetails = () => {
     useState(false);
   const [isUserWithDrawRsvp, setIsUserWithdrawnRsvp] = useState(false);
   const DAI_FLOW_RATE = 385802469135;
+  
+  
 
   const reArrangeEventsData = (eventData) => {
     // eventData is an array we just need to fix it
@@ -131,9 +135,9 @@ const EventDetails = () => {
       currentUser = alchemyToEventNode(currentUser);
       console.log(" current user updated ", currentUser);
       setCurrentUsername(currentUser.rows);
-      const userName = currentUser.rows[0][0];
-      console.log(" this is username ", userName);
       if (currentUser.rows.length > 0) {
+        const userName = currentUser.rows[0][0];
+        console.log(" this is username ", userName);
         console.log(" this is username fetched ", userName);
         let userRegisteredEvents = await tableland.read(
           `SELECT event_id FROM ${tableNames.EVENT_USER} WHERE username = '${userName}'`
@@ -203,7 +207,17 @@ const EventDetails = () => {
   useEffect(() => {
     window.Buffer = Buffer;
     initTableLand();
+    fetchUserSubs();
   }, []);
+
+  const fetchUserSubs = async () => {
+    const userAddress = GetAccount();
+    const subscriptions = await EpnsAPI.user.getSubscriptions({
+      user: `eip155:42:${userAddress}`, // user address in CAIP
+      env: 'staging'
+    });
+    console.log(subscriptions);
+  }
 
   const isUserExist = async (username) => {
     try {
