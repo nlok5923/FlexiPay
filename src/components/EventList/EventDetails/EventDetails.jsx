@@ -1,14 +1,11 @@
 import React, { useState, createRef } from "react";
 import "./EventDetails.css";
 import { Form, Input, Button, Steps, Alert, message } from "antd";
-import Slider from "react-slick";
-import { Link, useSearchParams } from "react-router-dom";
 import { Wallet, providers } from "ethers";
 import { connect } from "@tableland/sdk";
 import { useEffect } from "react";
 import Loader from "../../../shared/Loader/Loader";
 import GetAccount from "../../../hooks/GetAccount";
-import { ConstantFlowAgreementV1 } from "@superfluid-finance/sdk-core";
 import { Framework } from "@superfluid-finance/sdk-core";
 import { ethers } from "ethers";
 import tableNames from "../../../databaseConfig";
@@ -30,7 +27,6 @@ const EventDetails = () => {
   const { error, isUploading, moralisFile, saveFile } = useMoralisFile();
   let ethProvider = new ethers.providers.Web3Provider(window.ethereum);
   let flexiPayContract = new ethers.Contract(addresses.FlexiPay, FlexiPayArtifact.abi, ethProvider.getSigner(0));
-  // let flexiPayContract = GetContract(addresses.FlexiPay, FlexiPayArtifact.abi);
   let ProofOfAttendenceContract = GetContract(
     addresses.ProofOfAttendence,
     ProofOfAttendenceAbi.abi
@@ -55,7 +51,6 @@ const EventDetails = () => {
   const [isStreamEnded, setIsStreamEnded] = useState(false);
   const [tableLandState, setTableLandState] = useState(null);
   const [DaiToUsdPrice, setDaiToUsdPrice] = useState(1);
-  const [ethToUsdPrice, setEthToUsdPrice] = useState(1);
   const [currentUsername, setCurrentUsername] = useState(null);
   const [superFluidSignerState, setSuperFluidSignerState] = useState(null);
   const [superFluidInstance, setSuperfluidInstance] = useState(null);
@@ -139,9 +134,9 @@ const EventDetails = () => {
       currentUser = alchemyToEventNode(currentUser);
       console.log(" current user updated ", currentUser);
       setCurrentUsername(currentUser.rows);
-      const userName = currentUser.rows[0][0];
-      console.log(" this is username ", userName);
       if (currentUser.rows.length > 0) {
+        const userName = currentUser.rows[0][0];
+        console.log(" this is username ", userName);
         console.log(" this is username fetched ", userName);
         let userRegisteredEvents = await tableland.read(
           `SELECT event_id FROM ${tableNames.EVENT_USER} WHERE username = '${userName}'`
@@ -170,15 +165,6 @@ const EventDetails = () => {
           const superFluidSigner = superFluidProvider.getSigner();
           setSuperFluidSignerState(superFluidSigner);
 
-          console.log(" this is called in init tableland");
-          console.log(
-            addresses.SuperFakeDAIToken +
-              " " +
-              userAddress +
-              " " +
-              event.rows[0][10]
-          );
-
           let checkStream = await sf.cfaV1.getFlow({
             superToken: addresses.SuperFakeDAIToken,
             sender: userAddress,
@@ -193,7 +179,6 @@ const EventDetails = () => {
             setIsStreamEnded(true);
             setIsStreamStarted(false);
           }
-
           console.log(" checking flow rate ", checkStream);
         }
       }
@@ -446,10 +431,10 @@ const EventDetails = () => {
                 Org MetaMask Address: {event[10]}
               </div>
               <div className="ed-card-text">
-                Event Rate: {event[12] * DaiToUsdPrice}$ / hr
+                Event Rate: {event[12] * DaiToUsdPrice} Dai / hr
               </div>
               <div className="ed-card-text">
-                Event RSVP Fee: {event[13] * DaiToUsdPrice}$ 
+                Event RSVP Fee: {event[13] * DaiToUsdPrice} Dai 
               </div>
             </div>
           </div>

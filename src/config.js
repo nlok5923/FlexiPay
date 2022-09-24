@@ -6,7 +6,8 @@ const DappAddress = {
     "SuperFakeDAIToken": "0x5D8B4C2554aeB7e86F387B4d6c00Ac33499Ed01f", // super fake dai token of mumbai polygon scan
     "ProofOfAttendence": "0x22890db4492cb83E46B3001c45EaA0c3562B9bd4",
     "DAIDataFeed" : "0x0FCAa9c899EC5A91eBc3D5Dd869De833b06fB046",
-    "EthDataFeed": "0x0715A7794a1dc8e42615F059dD6e406A6594651A"
+    "EthDataFeed": "0x0715A7794a1dc8e42615F059dD6e406A6594651A",
+    "DaiContract": "0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063",
 };
 
 export default DappAddress;
