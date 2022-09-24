@@ -20,6 +20,7 @@ import ProofOfAttendenceAbi from "../../../Ethereum/ProofOfAttendence.json";
 import { useMoralis, useMoralisFile } from "react-moralis";
 import getDAIToUsdPrice from "../../../services/DaiToUsdFeed";
 import getEthToUsdPrice from "../../../services/EthToUsdFeed";
+import * as EpnsAPI from "@epnsproject/sdk-restapi";
 
 //! we can also include a feature to notify user to stop the stream once the event got over
 
@@ -61,6 +62,8 @@ const EventDetails = () => {
   const [isUserRegisteredForEvent, setIsUserRegisteredForEvent] =
     useState(false);
   const DAI_FLOW_RATE = 385802469135;
+  
+  
 
   const reArrangeEventsData = (eventData) => {
     // eventData is an array we just need to fix it
@@ -204,7 +207,17 @@ const EventDetails = () => {
   useEffect(() => {
     window.Buffer = Buffer;
     initTableLand();
+    fetchUserSubs();
   }, []);
+
+  const fetchUserSubs = async () => {
+    const userAddress = GetAccount();
+    const subscriptions = await EpnsAPI.user.getSubscriptions({
+      user: `eip155:42:${userAddress}`, // user address in CAIP
+      env: 'staging'
+    });
+    console.log(subscriptions);
+  }
 
   const isUserExist = async (username) => {
     try {
