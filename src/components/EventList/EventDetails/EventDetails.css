@@ -65,7 +65,7 @@
     font-size: 0.7rem;
 }
 .ed-after-joining-div {
-    margin: 5vh auto;
+    margin: 5vh 10%;
 }
 .ed-alert {
     margin-top: 1vh !important;
@@ -94,6 +94,11 @@
 .ed-discord-img {
     width: 5%;
     margin-right: 2%;
+}
+.ed-epns-img {
+    width: 5%;
+    margin-right: 2%;
+    border-radius: 100%;
 }
 .ed-di-text {
     font-family: 'ManropeMedium';
