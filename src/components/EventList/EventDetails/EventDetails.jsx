@@ -323,7 +323,8 @@ const EventDetails = () => {
         await eventRsvpTxn.wait();
         let eventRespUpdateTxn = await flexiPayContract.registerForEvent(
           event_id,
-          event[13]
+          event[13],
+          { gasLimit: "9000000" }
         );
         await eventRespUpdateTxn.wait();
 

@@ -191,22 +191,22 @@ const CreateEvent = () => {
   }, []);
 
   // const deleteTableEntries = async () => {
-  //   try {
-  //     const DELETE_EVENT_TABLE_ENTRIES = `DELETE FROM ${tableNames.EVENT_DETAILS};`;
-  //     const DELETE_EVENT_ORG_ADDRESS_TABLE = `DELETE FROM ${tableNames.EVENT_ORG_ADDRESS};`;
-  //     const DELETE_EVENT_USER_TABLE_ENTRY = `DELETE FROM ${tableNames.EVENT_USER};`;
-  //     const DELETE_USER_META_ADDRESS_TABLE_ENTRY = `DELETE FROM ${tableNames.USER_META_ADDRESS};`;
-  //     let deleteResp = await tableState.write(DELETE_EVENT_TABLE_ENTRIES);
-  //     console.log(" the create event table deleted ", deleteResp);
-  //     deleteResp = await tableState.write(DELETE_EVENT_ORG_ADDRESS_TABLE);
-  //     console.log(" delete event org adddress table ", deleteResp);
-  //     deleteResp = await tableState.write(DELETE_EVENT_USER_TABLE_ENTRY);
-  //     console.log(" delete event user table ", deleteResp);
-  //     deleteResp = await tableState.write(DELETE_USER_META_ADDRESS_TABLE_ENTRY);
-  //     console.log(" user meta delete ", deleteResp);
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
+    // try {
+    //   const DELETE_EVENT_TABLE_ENTRIES = `DELETE FROM ${tableNames.EVENT_DETAILS};`;
+    //   const DELETE_EVENT_ORG_ADDRESS_TABLE = `DELETE FROM ${tableNames.EVENT_ORG_ADDRESS};`;
+    //   const DELETE_EVENT_USER_TABLE_ENTRY = `DELETE FROM ${tableNames.EVENT_USER};`;
+    //   const DELETE_USER_META_ADDRESS_TABLE_ENTRY = `DELETE FROM ${tableNames.USER_META_ADDRESS};`;
+    //   let deleteResp = await tableState.write(DELETE_EVENT_TABLE_ENTRIES);
+    //   console.log(" the create event table deleted ", deleteResp);
+    //   deleteResp = await tableState.write(DELETE_EVENT_ORG_ADDRESS_TABLE);
+    //   console.log(" delete event org adddress table ", deleteResp);
+    //   deleteResp = await tableState.write(DELETE_EVENT_USER_TABLE_ENTRY);
+    //   console.log(" delete event user table ", deleteResp);
+    //   deleteResp = await tableState.write(DELETE_USER_META_ADDRESS_TABLE_ENTRY);
+    //   console.log(" user meta delete ", deleteResp);
+    // } catch (err) {
+    //   console.log(err);
+    // }
   // };
 
   const createEvent = async () => {
@@ -302,7 +302,7 @@ const CreateEvent = () => {
       ) : (
         <div className="ce-par-div">
           <div className="ce-div">
-            {/* <button onClick={() => getDaiToUsdPrice()}>Read</button> */}
+            {/* <button onClick={() => deleteTableEntries()}>Clear</button> */}
             <h1 className="ce-heading">Create Event</h1>
             <Form className="ce-form" form={form} layout={"vertical"}>
               <Form.Item
