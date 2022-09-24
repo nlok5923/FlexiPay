@@ -130,9 +130,9 @@ const EventDetails = () => {
       currentUser = alchemyToEventNode(currentUser);
       console.log(" current user updated ", currentUser);
       setCurrentUsername(currentUser.rows);
-      const userName = currentUser.rows[0][0];
-      console.log(" this is username ", userName);
       if (currentUser.rows.length > 0) {
+        const userName = currentUser.rows[0][0];
+        console.log(" this is username ", userName);
         console.log(" this is username fetched ", userName);
         let userRegisteredEvents = await tableland.read(
           `SELECT event_id FROM ${tableNames.EVENT_USER} WHERE username = '${userName}'`
