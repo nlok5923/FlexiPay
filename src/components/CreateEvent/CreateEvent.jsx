@@ -423,7 +423,7 @@ const CreateEvent = () => {
                   type="number"
                   min="0.000000000000000001"
                   step="0.000000000000000001"
-                  placeholder="Enter the rate of the stream in DAI (amount in wei/sec)"
+                  placeholder="Enter the rate of the stream in USD (USD/hr)"
                   name="Event Rate"
                   onChange={(e) => onChangeHandler(e)}
                 />
@@ -438,7 +438,7 @@ const CreateEvent = () => {
                   type="number"
                   min="0.000000000000000001"
                   step="0.000000000000000001"
-                  placeholder="Enter the RSVP fee in DAI"
+                  placeholder="Enter the RSVP fee in USD"
                   name="Event RSVP Fee"
                   onChange={(e) => onChangeHandler(e)}
                 />

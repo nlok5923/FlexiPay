@@ -127,6 +127,11 @@ const EventDetails = () => {
       let currentUser = await tableland.read(
         `SELECT username FROM ${tableNames.USER_META_ADDRESS} WHERE user_meta_address = '${userAddress}'`
       );
+      let data = await tableland.read(
+        `select * from ${tableNames.USER_META_ADDRESS}`
+      )
+      console.log(" this is full table for user meta address ", data);
+      console.log(" this is userAddress ", userAddress);
       const event = alchemyToEventNode(eventFetch);
       console.log(" this is current user fetch ", currentUser);
       setEvent(event.rows[0]);
@@ -194,10 +199,12 @@ const EventDetails = () => {
 
   const checkUserWithdrawnRsvpFee = async () => {
     try {
-      let isUserWithDrawnRsvp = await flexiPayContract.isRsvpFeeWithDrawn(
-        event_id
-      );
-      return isUserWithDrawnRsvp;
+      if(flexiPayContract) {
+        let isUserWithDrawnRsvp = await flexiPayContract.isRsvpFeeWithDrawn(
+          event_id
+        );
+        return isUserWithDrawnRsvp;
+      }
     } catch (err) {
       console.log(err);
     }
@@ -210,16 +217,21 @@ const EventDetails = () => {
   }, []);
 
   const isUserSubscribed = async () => {
-    const subs = await fetchUserSubs();
-    const fpChannel = process.env.REACT_APP_EPNS_CHANNEL;
-    for(let i=0;i<subs.length;i++) {
-      if(subs[i].channel === fpChannel) {
-        console.log("user is subscribed");
-        setIsUserSub(true);
-        return ;
+    try {
+      const subs = await fetchUserSubs();
+      const fpChannel = process.env.REACT_APP_EPNS_CHANNEL;
+      for(let i=0;i<subs.length;i++) {
+        if(subs[i].channel === fpChannel) {
+          console.log("user is subscribed");
+          setIsUserSub(true);
+          return ;
+        }
       }
+      initTableLand();
+      setIsUserSub(false);
+    } catch (err) {
+      console.log(err);
     }
-    setIsUserSub(false);
   }
 
   const subscribeToChannel = async () => {
@@ -307,13 +319,16 @@ const EventDetails = () => {
         const EVENTID_USER_QUERY = `INSERT INTO ${tableNames.EVENT_USER} (event_id, username, name) VALUES ('${event_id}', '${username}', '${name}')`;
         const USER_USER_META_QUERY = `INSERT INTO ${tableNames.USER_META_ADDRESS} (username, user_meta_address) VALUES ('${username}', '${userAddress}')`;
         const insertResp = await tableLandState.write(EVENTID_USER_QUERY);
-        console.log(insertResp);
-        if (!isUserExist(username)) {
+        console.log("Insert into event user table resp ", insertResp);
+        const isUserInTable = await isUserExist(username);
+        console.log("this is user exist ", isUserInTable);
+        if (!isUserInTable) {
+          console.log(" there is not username already ");
           // first check if there is already an entry for user in user meta address table if yes then skip below write op
           const insertRespMeta = await tableLandState.write(
             USER_USER_META_QUERY
           );
-          console.log(insertRespMeta);
+          console.log("insert into user meta table response ", insertRespMeta);
         }
 
         let eventRsvpTxn = await superFakeDAITokenContract.transfer(
@@ -328,13 +343,15 @@ const EventDetails = () => {
         );
         await eventRespUpdateTxn.wait();
 
-        setIsLoading(false);
         //! handles rest corner cases
         message.success("Registered for event successfully");
       } else {
         message.warning("Please fill all the fields");
       }
+      setIsLoading(false);
+      initTableLand();
     } catch (err) {
+      setIsLoading(false);
       message.warning("Some error occured during registration");
       console.log(err);
     }
@@ -427,8 +444,10 @@ const EventDetails = () => {
       let withDrawTxn = await flexiPayContract.withDrawRsvpFee(event_id, { gasLimit: 9000000 });
       await withDrawTxn.wait();
       setIsLoading(false);
+      initTableLand();
       message.success("Withdraw RSVP fee successfully completed!");
     } catch (err) {
+      setIsLoading(false);
       message.warning("Some error occured while withdraw!");
       console.log(err);
     }
@@ -587,7 +606,7 @@ const EventDetails = () => {
             </div>
           ) : null}
 
-          {/* {isUserRegisteredForEvent ? ( */}
+          {isUserRegisteredForEvent ? (
             <div className="ed-after-joining-div">
               <Alert
                 message="You are registered for the Event !"
@@ -626,7 +645,7 @@ const EventDetails = () => {
                   />
                   <div
                     className="ed-subs-div"
-                    onClick={subscribeToChannel}
+                    onClick={() => subscribeToChannel()}
                   >
                     <img
                       src="/assets/images/epns-logo.jpg"
@@ -646,19 +665,19 @@ const EventDetails = () => {
                   />
                   <div
                     className="ed-unsubs-div"
-                    onClick={unsubscribeFromChannel}
+                    // onClick={() => unsubscribeFromChannel()}
                   >
                     <img
                       src="/assets/images/epns-logo.jpg"
                       alt="epns-logo.jpg"
                       className="ed-epns-img"
                     />
-                    <span className="ed-di-text">Unsubscribe to Notifications</span>
+                    <span className="ed-di-text">You are Subscribed to Notifications</span>
                   </div>
                 </div>
               }
             </div>
-          {/* ) : null} */}
+          ) : null}
 
           {isUserRegisteredForEvent && !isStreamStarted ? (
             <div className="ed-stream-div">
@@ -695,8 +714,7 @@ const EventDetails = () => {
               </Button>
             </div>
           ) : null}
-          {/* && isEventOver(event[5], event[7]) ? */}
-          {isUserRegisteredForEvent && !isUserWithDrawRsvp ?  (
+          {isUserRegisteredForEvent && !isUserWithDrawRsvp && isEventOver(event[5], event[7]) ?  (
             <>
               <div className="ed-wf-div">
                 <h1 className="ed-heading">Withdraw RSVP Fees</h1>
